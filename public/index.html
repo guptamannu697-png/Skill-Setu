@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skill Setu — Apni Chhupi Hui Skills Khoje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF6ED;
+    --bg-soft: #F3ECDC;
+    --ink: #2B2620;
+    --ink-soft: #5B5347;
+    --teal: #1B4B43;
+    --teal-light: #2E6B5F;
+    --marigold: #E8A33D;
+    --marigold-soft: #F6D9A6;
+    --rust: #B5502A;
+    --card-bg: #FFFFFF;
+    --border: #E3D9C2;
+    --shadow: 0 2px 14px rgba(43, 38, 32, 0.08);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1C1A16;
+      --bg-soft: #26231D;
+      --ink: #F3ECDC;
+      --ink-soft: #C9BFA9;
+      --teal: #4A9384;
+      --teal-light: #5FAE9D;
+      --marigold: #F0B45C;
+      --marigold-soft: #4A3B22;
+      --rust: #D97650;
+      --card-bg: #26231D;
+      --border: #3A362C;
+      --shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1C1A16;
+    --bg-soft: #26231D;
+    --ink: #F3ECDC;
+    --ink-soft: #C9BFA9;
+    --teal: #4A9384;
+    --teal-light: #5FAE9D;
+    --marigold: #F0B45C;
+    --marigold-soft: #4A3B22;
+    --rust: #D97650;
+    --card-bg: #26231D;
+    --border: #3A362C;
+    --shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #app {
+    max-width: 640px;
+    margin: 0 auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Header ---------- */
+  .header {
+    padding: 18px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+  }
+  .header-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .header-mark svg { width: 100%; height: 100%; }
+  .header-text { flex: 1; min-width: 0; }
+  .header-text h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.1;
+  }
+  .header-text p {
+    margin: 2px 0 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .lang-toggle {
+    display: flex;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .lang-toggle button {
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .lang-toggle button.active {
+    background: var(--teal);
+    color: #FBF6ED;
+  }
+
+  .divider {
+    height: 6px;
+    background-image: repeating-linear-gradient(45deg, var(--marigold) 0, var(--marigold) 4px, transparent 4px, transparent 8px);
+    opacity: 0.55;
+  }
+
+  /* ---------- Hero illustration ---------- */
+  .hero-illo-wrap {
+    padding: 26px 20px 4px;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
+  }
+  .hero-illo-wrap svg { width: 100%; max-width: 480px; height: auto; }
+  .hero-thread {
+    stroke-dasharray: 480;
+    stroke-dashoffset: 480;
+    animation: draw-thread 1.4s ease forwards 0.15s;
+  }
+  .hero-medallion {
+    opacity: 0;
+    transform-origin: center;
+    animation: pop-medallion 0.5s ease forwards;
+  }
+  .hero-medallion:nth-of-type(1) { animation-delay: 0.5s; }
+  .hero-medallion:nth-of-type(2) { animation-delay: 0.75s; }
+  .hero-medallion:nth-of-type(3) { animation-delay: 1.0s; }
+  .hero-medallion:nth-of-type(4) { animation-delay: 1.25s; }
+  .hero-burst {
+    opacity: 0;
+    animation: fade-in 0.6s ease forwards 1.5s;
+  }
+  @keyframes draw-thread { to { stroke-dashoffset: 0; } }
+  @keyframes pop-medallion { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+  @keyframes fade-in { to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-thread, .hero-medallion, .hero-burst { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; }
+  }
+
+  /* ---------- Intro screen ---------- */
+  .intro {
+    padding: 26px 24px 28px;
+    text-align: left;
+  }
+  .intro h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 29px;
+    line-height: 1.25;
+    font-weight: 600;
+    margin: 0 0 14px;
+    max-width: 22ch;
+  }
+  .intro p {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 10px;
+  }
+  .intro-examples {
+    margin: 22px 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    font-size: 13px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--rust);
+    color: #FBF6ED;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(181, 80, 42, 0.3); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+    padding: 13px 20px;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  /* ---------- Chat ---------- */
+  .chat-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .chat-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 18px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bubble {
+    max-width: 84%;
+    padding: 13px 16px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+  .bubble.assistant {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: var(--shadow);
+  }
+  .bubble.user {
+    background: var(--teal);
+    color: #FBF6ED;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+  .typing {
+    align-self: flex-start;
+    display: flex;
+    gap: 4px;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+  }
+  .typing span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink-soft);
+    animation: blink 1.2s infinite ease-in-out;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+  .chat-input-row {
+    display: flex;
+    gap: 10px;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .chat-input-row textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    background: var(--card-bg);
+    color: var(--ink);
+    max-height: 110px;
+  }
+  .chat-input-row textarea:focus { outline: 2px solid var(--teal-light); outline-offset: 1px; }
+  .send-btn {
+    background: var(--rust);
+    color: #FBF6ED;
+    border: none;
+    border-radius: 12px;
+    width: 46px;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .progress-track {
+    height: 4px;
+    background: var(--bg-soft);
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--marigold);
+    transition: width 0.4s ease;
+  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 18px 0;
+    background: var(--bg);
+  }
+  .progress-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.02em;
+  }
+  .intro-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 24px;
+    margin: 0 0 22px;
+  }
+  .intro-meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--marigold);
+  }
+
+  /* ---------- Results ---------- */
+  .results { padding: 26px 20px 40px; }
+  .results-hero {
+    text-align: left;
+    margin-bottom: 26px;
+  }
+  .results-hero .eyebrow {
+    font-size: 13px;
+    color: var(--rust);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .results-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 25px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .flourish {
+    width: 46px;
+    height: 10px;
+    margin-top: 14px;
+  }
+  .discovery-card {
+    background: linear-gradient(165deg, var(--card-bg) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 20px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .discovery-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--marigold));
+  }
+  .discovery-step {
+    margin-bottom: 14px;
+  }
+  .discovery-step:last-child { margin-bottom: 0; }
+  .discovery-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .discovery-kicker.found { color: var(--teal); }
+  .discovery-quote {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.45;
+    margin: 0;
+    font-style: italic;
+  }
+  .discovery-arrow {
+    text-align: center;
+    color: var(--rust);
+    font-size: 22px;
+    line-height: 1;
+    margin: 4px 0 10px;
+  }
+  .discovery-skill-name {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--teal);
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  .why-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .why-box ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .transfer-badge {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--marigold-soft);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .evidence-chain {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+  }
+  .evidence-row {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .evidence-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .evidence-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+  .skill-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--marigold);
+  }
+  .skill-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .skill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--marigold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .skill-icon svg { width: 21px; height: 21px; }
+  .skill-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    margin: 0;
+    font-weight: 600;
+  }
+  .skill-card .quote {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 14px;
+  }
+  .skill-card .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 14px 0 6px;
+  }
+  .skill-card .section-label:first-of-type { margin-top: 0; }
+  .path-item {
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+  .path-item .link-name {
+    color: var(--rust);
+    font-weight: 600;
+  }
+  .gap-text, .cert-text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .cert-flag {
+    display: inline-block;
+    background: var(--marigold-soft);
+    color: var(--rust);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+
+  .plan-section { margin: 30px 0; }
+  .plan-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin: 0 0 14px;
+  }
+  .week-row {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .week-row:last-child { border-bottom: none; }
+  .week-num {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--teal);
+    flex-shrink: 0;
+    width: 62px;
+  }
+  .week-task { font-size: 14.5px; line-height: 1.55; }
+  .week-theme {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--rust);
+    margin-top: 2px;
+  }
+
+  .section-block { margin: 28px 0; }
+  .section-block h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin: 0 0 14px;
+  }
+  .direction-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .direction-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    margin: 0 0 10px;
+    color: var(--teal);
+  }
+  .direction-dl {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .direction-dl dt {
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 8px;
+  }
+  .direction-dl dt:first-child { margin-top: 0; }
+  .direction-dl dd {
+    margin: 2px 0 0;
+    color: var(--ink-soft);
+  }
+  .proof-hero {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    color: #FBF6ED;
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+  }
+  .proof-hero .proof-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 8px;
+  }
+  .proof-hero p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+  .proof-hero .proof-detail {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.92;
+    font-weight: 400;
+  }
+
+  .passport-card {
+    background: var(--card-bg);
+    border: 2px solid var(--teal);
+    border-radius: 18px;
+    padding: 22px 20px;
+    margin: 24px 0;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .passport-card::after {
+    content: '';
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 2px dashed var(--marigold);
+    opacity: 0.5;
+  }
+  .passport-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin: 0 0 4px;
+    color: var(--teal);
+  }
+  .passport-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+  .passport-body {
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  .passport-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .fit-summary {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .bio-box {
+    background: var(--bg-soft);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .bio-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    margin: 0 0 10px;
+  }
+  .bio-box p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    margin: 0 0 12px;
+  }
+  .copy-btn {
+    background: var(--teal);
+    color: #FBF6ED;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copy-btn.copied { background: var(--marigold); color: var(--ink); }
+
+  .safety-note {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 26px;
+  }
+
+  .restart-row { margin-top: 28px; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 420px) {
+    .intro h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="header">
+    <div class="header-mark">
+      <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="19" cy="19" r="19" fill="var(--teal)"/>
+        <path d="M11 22 C13 16, 17 14, 19 19 C21 24, 25 22, 27 16" stroke="var(--marigold)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Skill Setu</h1>
+      <p id="tagline">Aapki roz ki zindagi se, aapki agli income tak</p>
+    </div>
+    <div class="lang-toggle">
+      <button id="langBtnHi" class="active" onclick="setLang('hi')">हिं</button>
+      <button id="langBtnEn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- ============ HERO ILLUSTRATION ============ -->
+  <div class="hero-illo-wrap">
+    <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A woman's everyday skills, connected by a thread, opening into new opportunity">
+      <!-- woman silhouette, profile -->
+      <g>
+        <path d="M58 190 C50 150, 52 120, 66 100 C58 92, 56 78, 64 66 C72 52, 92 48, 104 58 C116 66, 118 82, 110 94 C122 100, 128 112, 126 126 L128 190 Z" fill="var(--teal)"/>
+        <circle cx="88" cy="72" r="4" fill="var(--bg)" opacity="0.5"/>
+      </g>
+      <!-- embroidery thread flowing right -->
+      <path class="hero-thread" d="M120 100 C 170 70, 210 130, 250 100 C 290 70, 320 130, 360 100" fill="none" stroke="var(--rust)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 9"/>
+      <!-- medallions along the thread -->
+      <g class="hero-medallion">
+        <circle cx="168" cy="82" r="19" fill="var(--card-bg)" stroke="var(--marigold)" stroke-width="2"/>
+        <path d="M160 88 C160 80, 176 80, 176 88 L175 90 L161 90 Z M161 84 L175 84" stroke="var(--teal)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g class="hero-medallion">
+        <circle cx="230" cy="118" r="19" fill="var(--card-bg)" stroke="var(--marigold)" stroke-width="2"/>
+        <path d="M223 126 L237 112 M223 112 L223 116 M223 112 L227 112" stroke="var(--teal)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g class="hero-medallion">
+        <circle cx="292" cy="82" r="19" fill="var(--card-bg)" stroke="var(--marigold)" stroke-width="2"/>
+        <circle cx="292" cy="82" r="8" stroke="var(--teal)" stroke-width="1.6" fill="none"/>
+        <path d="M292 78 L292 86 M288 82 L296 82" stroke="var(--teal)" stroke-width="1.3"/>
+      </g>
+      <g class="hero-medallion">
+        <circle cx="348" cy="116" r="19" fill="var(--card-bg)" stroke="var(--marigold)" stroke-width="2"/>
+        <path d="M340 122 L340 108 L356 108 M340 115 L352 115" stroke="var(--teal)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <!-- radiant burst / opportunity -->
+      <g class="hero-burst">
+        <circle cx="415" cy="90" r="22" fill="var(--marigold)"/>
+        <g stroke="var(--marigold)" stroke-width="3" stroke-linecap="round">
+          <line x1="415" y1="52" x2="415" y2="40"/>
+          <line x1="447" y1="68" x2="457" y2="60"/>
+          <line x1="447" y1="112" x2="457" y2="120"/>
+          <line x1="415" y1="128" x2="415" y2="140"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ============ INTRO SCREEN ============ -->
+  <div id="screen-intro" class="intro">
+    <div class="intro-meta" id="introMeta"><span class="intro-meta-dot" aria-hidden="true"></span><span id="introMetaText"></span></div>
+    <h2 id="introHeadline"></h2>
+    <p id="introP1"></p>
+    <p id="introP2"></p>
+    <div class="intro-examples" id="introChips"></div>
+    <button class="btn-primary" id="startBtn" onclick="startChat()"></button>
+    <br>
+    <button class="btn-secondary" id="demoBtn" onclick="startDemo()"></button>
+  </div>
+
+  <!-- ============ CHAT SCREEN ============ -->
+  <div id="screen-chat" class="chat-wrap hidden">
+    <div class="progress-row">
+      <span class="progress-label" id="progressLabel" aria-live="polite"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="chat-log" id="chatLog"></div>
+    <div class="chat-input-row">
+      <textarea id="chatInput" rows="1" onkeydown="handleKey(event)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11L21 3L13 21L11 13L3 11Z" stroke="#FBF6ED" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ RESULTS SCREEN ============ -->
+  <div id="screen-results" class="results hidden">
+    <div class="results-hero">
+      <div class="eyebrow" id="resultsEyebrow"></div>
+      <h2 id="resultsHeadline"></h2>
+      <svg class="flourish" viewBox="0 0 46 10" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 5 C 8 -2, 15 12, 23 5 C 31 -2, 38 12, 46 5" stroke="var(--rust)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div id="fitSummary" class="fit-summary hidden"></div>
+    <div id="skillCardsContainer"></div>
+    <div class="section-block" id="directionsSection">
+      <h3 id="directionsTitle"></h3>
+      <div id="directionsContainer"></div>
+    </div>
+    <div class="section-block" id="proofSection">
+      <div class="proof-hero" id="proofHero"></div>
+    </div>
+    <div class="plan-section">
+      <h3 id="planTitle"></h3>
+      <div id="planContainer"></div>
+    </div>
+    <div class="passport-card" id="passportCard">
+      <h3 class="passport-title" id="passportTitle"></h3>
+      <p class="passport-sub" id="passportSub"></p>
+      <p class="passport-body" id="passportBody"></p>
+      <div class="passport-actions">
+        <button class="copy-btn" id="copyBtn" type="button" onclick="copyPassport()"></button>
+        <button class="copy-btn" id="shareBtn" type="button" style="background:var(--rust)" onclick="sharePassport()"></button>
+      </div>
+    </div>
+    <div class="safety-note" id="safetyNote"></div>
+    <div class="restart-row">
+      <button class="btn-secondary" id="restartBtn" onclick="restart()"></button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============ TRANSLATIONS ============ */
+const T = {
+  hi: {
+    tagline: "Roz ke kaam se, chhupi hui skills tak",
+    introMeta: "2 minutes · 5 questions",
+    introHeadline: "Aap jo roz karti hain, usmein skills chhupi hain.",
+    introP1: "Skill Setu un skills ko pehchanne aur unka agla step dhoondhne mein aapki madad karta hai.",
+    introP2: "Resume ya purana job experience zaroori nahi — bas apni zindagi ki baat kijiye, jaise kisi apne dost se.",
+    chips: ["Khana banana", "Budget sambhalna", "Silai-kadhai", "Bachon ko padhana", "Function organize karna"],
+    startBtn: "Shuru Karein",
+    demoBtn: "Demo persona se dekhein (testing ke liye)",
+    inputPlaceholder: "Yahan apna jawab likhein...",
+    progressLabel: "Discovering your skills · {n}/5",
+    resultsEyebrow: "Aapki discovery complete",
+    resultsHeadline: "Yeh woh skills hain jo aapke kaam se nikli hain",
+    youSaid: "Aapne kaha",
+    skillFound: "Skill Setu ne pehchana",
+    whyLabel: "Kyun?",
+    transferable: "Yeh skill doosri jagah bhi kaam aati hai.",
+    evidenceWords: "Aapke shabd",
+    evidenceBehaviour: "Jo humne dekha",
+    evidenceSkill: "Professional skill",
+    evidenceUse: "Kahan use ho sakti hai",
+    directionsTitle: "Possible directions",
+    dirWhy: "Kyun fit hai",
+    dirHas: "Jo aapke paas hai",
+    dirMissing: "Jo abhi missing hai",
+    dirStep: "Pehla step",
+    proofKicker: "Pehla proof of work",
+    planTitle: "30-Din Ka Plan",
+    weekThemes: ["Prepare", "Practice", "Create proof", "Pehla step"],
+    passportTitle: "My Skill Passport",
+    passportSub: "Share karein ya save karein — yeh aapki discovery ka record hai.",
+    copyBtn: "Copy passport",
+    shareBtn: "Share",
+    copiedBtn: "Copy ho gaya ✓",
+    sharedBtn: "Share ho gaya ✓",
+    fitTitle: "Aapki fit",
+    safetyNote: "Ye sujhaav shuruaati marg-darshan ke liye hain. Kisi bhi paise ya health se jude faisle se pehle, kripya sthaniya jaankari zaroor verify karein.",
+    restartBtn: "Dobara shuru karein",
+    certFlag: "⚠ Certification pehle zaroori hai",
+    openingQuestion: "Namaste! Main Skill Setu hoon. Shuru karte hain aapki roz ki zindagi se — bina resume ke, bina form ke. Aaj aap ghar ya parivaar ke liye kya-kya sambhalti hain? Jaise khana, budget, bachon ki padhai, koi function… jo bhi sach ho, wahi likhiye.",
+    errorMsg: "Maaf kijiye, kuch dikkat aa gayi. Kripya dobara try karein.",
+    reportErrorMsg: "Maaf kijiye, report banane mein dikkat aayi. Kripya dobara try karein.",
+    languageInstruction: "Reply in simple Hindi/Hinglish (Hindi written in Roman/Latin script, mixed naturally with English words as commonly spoken)."
+  },
+  en: {
+    tagline: "From everyday life to hidden skills",
+    introMeta: "2 minutes · 5 questions",
+    introHeadline: "The things you do every day hide real skills.",
+    introP1: "Skill Setu helps you name those skills and find a grounded next step.",
+    introP2: "No resume or job history required — just talk about your life, like you would with someone you trust.",
+    chips: ["Cooking", "Managing budget", "Tailoring", "Teaching kids", "Organizing events"],
+    startBtn: "Get Started",
+    demoBtn: "See a demo persona (for testing)",
+    inputPlaceholder: "Type your answer here...",
+    progressLabel: "Discovering your skills · {n}/5",
+    resultsEyebrow: "Your discovery is complete",
+    resultsHeadline: "These skills emerged from what you do",
+    youSaid: "You said",
+    skillFound: "Skill Setu found",
+    whyLabel: "Why?",
+    transferable: "This is a transferable skill.",
+    evidenceWords: "Your words",
+    evidenceBehaviour: "What we observed",
+    evidenceSkill: "Professional skill",
+    evidenceUse: "Possible use",
+    directionsTitle: "Possible directions",
+    dirWhy: "Why it matches",
+    dirHas: "What you already have",
+    dirMissing: "What's missing",
+    dirStep: "First step",
+    proofKicker: "First proof of work",
+    planTitle: "Your 30-day plan",
+    weekThemes: ["Prepare", "Practice", "Create proof", "Take first step"],
+    passportTitle: "My Skill Passport",
+    passportSub: "Copy or share — a record of your discovery.",
+    copyBtn: "Copy passport",
+    shareBtn: "Share",
+    copiedBtn: "Copied ✓",
+    sharedBtn: "Shared ✓",
+    fitTitle: "Your fit",
+    safetyNote: "These suggestions are a starting point, not final advice. Please verify locally before committing any money or making health-related decisions.",
+    restartBtn: "Start over",
+    certFlag: "⚠ Certification required first",
+    openingQuestion: "Hi — I'm Skill Setu. Let's start with your everyday life — no resume, no form. What do you take care of at home or for your family today? Cooking, budget, teaching kids, organizing a function… whatever is true for you.",
+    errorMsg: "Sorry, something went wrong. Please try again.",
+    reportErrorMsg: "Sorry, there was a problem generating your report. Please try again.",
+    languageInstruction: "Reply in simple, warm, plain English."
+  }
+};
+
+const SYSTEM_PROMPT_BASE = `You are "Skill Setu" — an AI guide that helps Indian women (especially 40+, after years of caregiving/family focus) discover professional skills hidden in everyday life.
+
+## PHILOSOPHY
+Don't ask "what skills do you have?" Ask "what do you do?" Gather concrete evidence before any skill label — that happens later, not in chat.
+
+## TONE
+Warm, respectful, empowering — never patronizing. Her household years were real work. Replies: 2–4 short sentences. Guided discovery, NOT a form or HR interview.
+
+## YOUR JOB IN THIS CHAT
+Ask ONE adaptive follow-up at a time. When she mentions something broad (e.g. organizing functions), ask which part she handles (budget, guests, vendors, timing, decoration) before moving on. Reflect her words briefly, then ask the next question.
+
+Turn guide (5 user answers total in this flow):
+- After answer 1–2: daily responsibilities and specific examples (what, how often, who relies on her).
+- After answer 3: something she enjoys or is proud of; one concrete story.
+- After answer 4: lightweight FIT — time she can give per week, and home/local/online/anywhere preference.
+- After answer 5: starting investment comfort (none/low/some) and work style (solo, with people, flexible).
+
+Do not assign skill names or categories in chat. Do not guarantee income. Do not invent facts she didn't say. If unclear, ask — don't assume.`;
+
+const SKILL_TABLE = `## SKILL GROUNDING TABLE (map her answers ONLY to these categories — do not invent skills or income paths outside this list)
+
+1. Culinary/Food Prep -> Home tiffin service, small catering | Links: local WhatsApp/Facebook groups, Swiggy/Zomato cloud kitchen, FSSAI registration | Gap: pricing, hygiene/packaging | No certification required (FSSAI recommended)
+2. Baking -> Home bakery via WhatsApp/Instagram | Links: Instagram Business | Gap: costing, shelf-life/packaging | Optional short course
+3. Tailoring & Alterations -> Alteration service, custom stitching | Links: Meesho seller app, Instagram Business, local WhatsApp groups | Gap: pricing, no digital presence | No certification required
+4. Embroidery/Mehendi/Handicrafts -> Mehendi for events, handmade product sales | Links: Meesho, Instagram, Etsy India | Gap: photography of work, online selling | No certification required
+5. Household Budgeting & Money Management -> Budget coaching for other families | Links: Selyst, WhatsApp/Instagram direct outreach | Gap: formalizing into a paid service, no credibility signal | No certification required (basic course adds trust)
+6. Bookkeeping & Basic Accounts -> Data entry/bookkeeping for local shops | Links: Truelancer, Freelancer, Upwork India | Gap: Tally/Excel skills, client access | Recommended: basic Tally/Excel course
+7. Academic Tutoring -> Home tuition, online tutoring | Links: UrbanPro, Vedantu | Gap: no formal credential, low confidence pricing | No certification for school-level
+8. Skill Coaching (music/dance/art/yoga) -> Home classes, community workshops | Links: UrbanPro, local community halls, Instagram | Gap: structuring curriculum, marketing | No certification (yoga: certificate builds trust)
+9. Event & Function Organising -> Small event planning, decor coordination | Links: WedMeGood, Weddingkart, ShaadiSaga | Gap: vendor network, no portfolio | No certification required
+10. Customer Handling & Communication -> Telecalling, reception, part-time sales | Links: Apna.co, Naukri, Internshala | Gap: no formal resume/interview experience | No certification required
+11. Sales, Negotiation & Reselling -> Reselling via WhatsApp/Meesho, vendor sourcing | Links: Meesho, GlowRoad | Gap: digital payment/listing skills | No certification required
+12. Household Operations & Scheduling -> Personal assistant/admin support | Links: Apna.co, Upwork (virtual assistant) | Gap: no formal "admin" framing of experience | No certification required
+13. Beauty & Grooming -> Home salon, freelance makeup | Links: Urban Company partner registration | Gap: formal training, hygiene certification | RECOMMENDED: basic beauty course
+14. Childcare -> Daycare help, babysitting, roles at childcare institutions | Links: CareOff, YouChooseWork, local playschools | Gap: formal safety/first-aid knowledge | RECOMMENDED: basic child safety/first-aid
+15. Elder Care & Home Health Support -> Elder companion/attendant, roles at old age homes | Links: CareOff, local certified home-health agencies | Gap: no formal certification, trust barrier | MANDATORY: home-health/attendant certification — ALWAYS state this first, never suggest starting without it
+16. Social Media & Digital Content -> Social media management for local businesses | Links: Internshala, Fiverr | Gap: doesn't see casual usage as a paid skill | Optional: short digital marketing course
+17. Spoken English/Language Coaching -> English classes for kids/adults | Links: UrbanPro, Vedantu | Gap: confidence, no structured teaching method | No certification required
+18. Basic Computer/Data Entry Literacy -> Data entry, form-filling assistance | Links: Internshala, Apna.co, Truelancer | Gap: doesn't recognize this as monetizable | No certification required
+19. Self-Taught Digital/AI Upskilling -> Freelance data analysis, dashboards, AI-assisted task work, basic web/CRM setup | Links: Upwork India, Internshala, Truelancer, Fiverr | Gap: portfolio/credibility, pricing confidence, client acquisition | No certification required (course helps build trust)
+
+## SAFETY RULES (non-negotiable)
+- For Elder Care (#15): ALWAYS mention certification requirement before any income suggestion. Never suggest she start unsupervised elder care work.
+- Never guarantee income, salary, or earnings. Never invent salary figures.
+- Never fabricate experience she did not describe. Never use fake confidence scores or percentages.
+- No medical, legal, or personal financial advice — only exploratory direction.
+- Never present any suggestion as a final decision — frame as "options to explore" and verify locally before money or time.
+- If evidence is weak or no category fits, return fewer skills or note uncertainty — do not force a mismatch.`;
+
+const DEMO_ANSWERS = {
+  hi: [
+    "Main ghar ka sara kaam sambhalti hoon — khana banana, safai, bachon ki padhai sab. Beta engineer bana, uske baad socha ab apne liye kuch karu.",
+    "Haan, ghar ka pura budget main hi dekhti hoon — kharcha, savings, sab kuch. Function ka budget bhi main hi plan karti hoon.",
+    "Mujhe cooking bahut pasand hai, aur main organize karna bhi pasand karti hoon — log mujhse advice bhi lete hain.",
+    "Week mein 10-12 ghante de sakti hoon. Ghar se ya local area se start karna pasand hai.",
+    "Shuru mein zyada paisa nahi lagana — bas phone aur time. Akeli ya chhote group ke saath kaam karna theek hai."
+  ],
+  en: [
+    "I take care of everything at home — cooking, cleaning, the kids' studies, all of it. My son became an engineer, and after that I thought it's time to do something for myself.",
+    "Yes, I manage the entire household budget — expenses, savings, all of it. I also plan the budget for family functions.",
+    "I really love cooking and organizing — people come to me for advice too.",
+    "I can give about 10–12 hours a week. I'd like to start from home or locally.",
+    "I don't want to spend much upfront — just my phone and time. I'm fine working solo or in a small group."
+  ]
+};
+
+let conversation = [];
+let currentLang = 'hi';
+let lastResult = null;
+
+// Calls our own backend (/api/chat), which safely holds the API key server-side.
+async function callBackend(mode, prompt) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mode, prompt })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Backend error');
+  return data.text;
+}
+
+function applyTranslations() {
+  const t = T[currentLang];
+  document.documentElement.lang = currentLang === 'hi' ? 'hi' : 'en';
+  document.getElementById('tagline').textContent = t.tagline;
+  document.getElementById('introMetaText').textContent = t.introMeta;
+  document.getElementById('introHeadline').textContent = t.introHeadline;
+  document.getElementById('introP1').textContent = t.introP1;
+  document.getElementById('introP2').textContent = t.introP2;
+  const chipsEl = document.getElementById('introChips');
+  chipsEl.innerHTML = '';
+  t.chips.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'chip';
+    span.textContent = c;
+    chipsEl.appendChild(span);
+  });
+  document.getElementById('startBtn').textContent = t.startBtn;
+  document.getElementById('demoBtn').textContent = t.demoBtn;
+  document.getElementById('chatInput').placeholder = t.inputPlaceholder;
+  document.getElementById('resultsEyebrow').textContent = t.resultsEyebrow;
+  document.getElementById('resultsHeadline').textContent = t.resultsHeadline;
+  document.getElementById('planTitle').textContent = t.planTitle;
+  document.getElementById('directionsTitle').textContent = t.directionsTitle;
+  document.getElementById('passportTitle').textContent = t.passportTitle;
+  document.getElementById('passportSub').textContent = t.passportSub;
+  document.getElementById('copyBtn').textContent = t.copyBtn;
+  document.getElementById('shareBtn').textContent = t.shareBtn;
+  document.getElementById('safetyNote').textContent = t.safetyNote;
+  document.getElementById('restartBtn').textContent = t.restartBtn;
+
+  document.getElementById('langBtnHi').classList.toggle('active', currentLang === 'hi');
+  document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  applyTranslations();
+}
+
+function startChat() {
+  document.getElementById('screen-intro').classList.add('hidden');
+  document.getElementById('screen-chat').classList.remove('hidden');
+  conversation = [{ role: 'assistant', content: T[currentLang].openingQuestion }];
+  renderChat();
+  updateProgress();
+  document.getElementById('chatInput').focus();
+}
+
+function startDemo() {
+  document.getElementById('screen-intro').classList.add('hidden');
+  document.getElementById('screen-chat').classList.remove('hidden');
+  conversation = [{ role: 'assistant', content: T[currentLang].openingQuestion }];
+  renderChat();
+  updateProgress();
+  runDemoSequence();
+}
+
+async function runDemoSequence() {
+  const answers = DEMO_ANSWERS[currentLang];
+  for (let i = 0; i < answers.length; i++) {
+    await new Promise(r => setTimeout(r, 900));
+    await submitAnswer(answers[i]);
+  }
+}
+
+function renderChat() {
+  const log = document.getElementById('chatLog');
+  log.innerHTML = '';
+  conversation.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = 'bubble ' + msg.role;
+    div.textContent = msg.content;
+    log.appendChild(div);
+  });
+  log.scrollTop = log.scrollHeight;
+}
+
+function showTyping() {
+  const log = document.getElementById('chatLog');
+  const div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function hideTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+function updateProgress() {
+  const userTurns = conversation.filter(m => m.role === 'user').length;
+  const n = Math.min(5, userTurns);
+  const pct = Math.min(100, (userTurns / 5) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  const label = T[currentLang].progressLabel.replace('{n}', String(n));
+  document.getElementById('progressLabel').textContent = label;
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  await submitAnswer(text);
+}
+
+async function submitAnswer(text) {
+  conversation.push({ role: 'user', content: text });
+  renderChat();
+  updateProgress();
+
+  const userTurns = conversation.filter(m => m.role === 'user').length;
+
+  if (userTurns >= 5) {
+    showTyping();
+    await generateResults();
+    return;
+  }
+
+  document.getElementById('sendBtn').disabled = true;
+  showTyping();
+  try {
+    const langLine = T[currentLang].languageInstruction;
+    const fullPrompt = SYSTEM_PROMPT_BASE + '\n\n## LANGUAGE\n' + langLine + '\n\n---\n\nConversation so far:\n' + conversation.map(m => (m.role === 'assistant' ? 'You: ' : 'Her: ') + m.content).join('\n') + '\n\nNow ask your next short question.';
+    const text = await callBackend('chat', fullPrompt);
+    hideTyping();
+    conversation.push({ role: 'assistant', content: text.trim() });
+    renderChat();
+  } catch (err) {
+    hideTyping();
+    conversation.push({ role: 'assistant', content: T[currentLang].errorMsg });
+    renderChat();
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+
+async function generateResults() {
+  document.getElementById('sendBtn').disabled = true;
+  const transcript = conversation.map(m => (m.role === 'assistant' ? 'AI: ' : 'Her: ') + m.content).join('\n');
+  const langLine = T[currentLang].languageInstruction;
+  const extractionPrompt = SYSTEM_PROMPT_BASE + '\n\n## LANGUAGE\n' + langLine + '\n\n' + SKILL_TABLE + `
+
+## TASK (EXTRACT MODE)
+From the conversation below, identify 1–3 skills with STRONG evidence only. Map names to the grounding table. If evidence is weak, return 1 skill or include "uncertaintyNote" explaining why fewer skills were chosen.
+
+Write ALL user-facing text in the language specified above. Never include confidence scores, percentages, or salary figures.
+
+Conversation transcript:
+${transcript}
+
+Respond with ONLY valid JSON (no markdown fences):
+{
+  "fitSummary": "One short paragraph summarizing her time, location, investment, work preference from the chat",
+  "skills": [
+    {
+      "name": "Professional skill name from table",
+      "userQuote": "Exact or near-exact short quote from her words",
+      "observedBehaviour": "Concrete behaviour you inferred from evidence (not invented)",
+      "whyReasons": ["bullet 1", "bullet 2", "bullet 3"],
+      "evidenceUse": "Where this skill could apply professionally",
+      "certification": "cert note if applicable else empty string",
+      "certRequired": true or false
+    }
+  ],
+  "directions": [
+    {
+      "title": "Grounded direction name (from table paths, not invented)",
+      "whyMatch": "Why it fits her evidence and fit",
+      "alreadyHas": "What she already brings",
+      "missing": "Honest gap — no shame",
+      "firstStep": "One small actionable step this week"
+    }
+  ],
+  "firstProofOfWork": {
+    "title": "Short label e.g. 5-order trial menu",
+    "description": "Concrete proof task tailored to her top skill",
+    "howTo": "2-3 sentences on how to complete it"
+  },
+  "actionPlan": [
+    {"week": "Week 1", "theme": "Prepare", "task": "..."},
+    {"week": "Week 2", "theme": "Practice", "task": "..."},
+    {"week": "Week 3", "theme": "Create proof", "task": "..."},
+    {"week": "Week 4", "theme": "Take first step", "task": "..."}
+  ],
+  "passportNextStep": "One sentence — the very next thing to do after today",
+  "uncertaintyNote": "optional — if evidence was limited"
+}`;
+
+  try {
+    const rawText = await callBackend('extract', extractionPrompt);
+    hideTyping();
+    const cleaned = rawText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '');
+    const result = JSON.parse(cleaned);
+    lastResult = result;
+    renderResults(result);
+  } catch (err) {
+    hideTyping();
+    document.getElementById('screen-chat').classList.remove('hidden');
+    conversation.push({ role: 'assistant', content: T[currentLang].reportErrorMsg });
+    renderChat();
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+
+const SKILL_ICONS = {
+  food: '<path d="M4 11 h16 a1 1 0 0 1-1 3 H5 a1 1 0 0 1-1-3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 14 c0 4 2 6 6 6 s6-2 6-6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 11 V7 M12 11 V5 M15 11 V7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  needle: '<path d="M5 19 L17 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18.5" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 19 c-1 1-2 1-2.5 0.5 s-0.5-1.5 0.5-2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  money: '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5 v9 M9.5 9.5 c0-1.4 1.1-2 2.5-2 s2.5 0.7 2.5 1.8 c0 2.4-5 1.3-5 3.7 c0 1.1 1.1 1.8 2.5 1.8 s2.5-0.6 2.5-2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  book: '<path d="M5 5 h6 a2 2 0 0 1 2 2 v12 a2 2 0 0 0-2-2 H5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M19 5 h-6 a2 2 0 0 0-2 2 v12 a2 2 0 0 1 2-2 h6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+  music: '<circle cx="7" cy="17" r="2.3" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17" cy="15" r="2.3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9.3 17 V6 L19.3 4 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+  calendar: '<rect x="4" y="6" width="16" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4 10 h16 M8 4 v4 M16 4 v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+  chat: '<path d="M5 6 h14 a1 1 0 0 1 1 1 v8 a1 1 0 0 1-1 1 H10 l-4 4 v-4 H5 a1 1 0 0 1-1-1 V7 a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+  tag: '<path d="M11 4 h6 a1 1 0 0 1 1 1 v6 l-9 9 -7-7 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor"/>',
+  sparkle: '<path d="M12 4 l1.8 5.2 L19 11 l-5.2 1.8 L12 18 l-1.8-5.2 L5 11 l5.2-1.8 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  heart: '<path d="M12 19 C6 14.5 3 11.6 3 8.3 3 5.9 5 4 7.4 4 9 4 10.6 4.9 12 6.6 13.4 4.9 15 4 16.6 4 19 4 21 5.9 21 8.3 21 11.6 18 14.5 12 19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+  phone: '<rect x="7" y="3" width="10" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M11 18 h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9 7 c2-1.5 4-1.5 6 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+  chip: '<rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 2 v3 M12 19 v3 M2 12 h3 M19 12 h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+  spark: '<path d="M12 3 l1.6 6.4 L20 11 l-6.4 1.6 L12 19 l-1.6-6.4 L4 11 l6.4-1.6 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+};
+
+function getSkillIcon(name) {
+  const n = (name || '').toLowerCase();
+  let key = 'spark';
+  if (/bak|food|culinary|cook|tiffin/.test(n)) key = 'food';
+  else if (/tailor|embroid|mehendi|craft|stitch/.test(n)) key = 'needle';
+  else if (/budget|money|bookkeep|account|finance/.test(n)) key = 'money';
+  else if (/tutor|academic|english|language|literacy/.test(n)) key = 'book';
+  else if (/coach|music|dance|yoga|art/.test(n)) key = 'music';
+  else if (/event|function|organis|schedul|operation/.test(n)) key = 'calendar';
+  else if (/customer|communicat/.test(n)) key = 'chat';
+  else if (/sales|resell|negotiat/.test(n)) key = 'tag';
+  else if (/beauty|groom/.test(n)) key = 'sparkle';
+  else if (/child|elder|care/.test(n)) key = 'heart';
+  else if (/social media|digital content/.test(n)) key = 'phone';
+  else if (/ai|digital|comput|data/.test(n)) key = 'chip';
+  return `<svg viewBox="0 0 24 24" fill="none" style="color:var(--teal)">${SKILL_ICONS[key]}</svg>`;
+}
+
+function renderResults(data) {
+  document.getElementById('screen-chat').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+  window.scrollTo(0, 0);
+  const t = T[currentLang];
+
+  const fitEl = document.getElementById('fitSummary');
+  if (data.fitSummary) {
+    fitEl.classList.remove('hidden');
+    fitEl.innerHTML = '<strong>' + escapeHtml(t.fitTitle) + ':</strong> ' + escapeHtml(data.fitSummary);
+  } else {
+    fitEl.classList.add('hidden');
+    fitEl.textContent = '';
+  }
+
+  const container = document.getElementById('skillCardsContainer');
+  container.innerHTML = '';
+  const skills = data.skills || [];
+  if (!skills.length) {
+    container.innerHTML = '<p class="gap-text">' + escapeHtml(data.uncertaintyNote || t.reportErrorMsg) + '</p>';
+  }
+  skills.forEach(skill => {
+    const quote = skill.userQuote || skill.quote || '';
+    const whyList = (skill.whyReasons || []).map(r => '<li>' + escapeHtml(r) + '</li>').join('');
+    const certHtml = skill.certRequired ? '<div class="cert-flag">' + t.certFlag + '</div>' : '';
+    const card = document.createElement('article');
+    card.className = 'discovery-card';
+    card.innerHTML = `
+      <div class="discovery-step">
+        <div class="discovery-kicker">${escapeHtml(t.youSaid)}</div>
+        <p class="discovery-quote">"${escapeHtml(quote)}"</p>
+      </div>
+      <div class="discovery-arrow" aria-hidden="true">↓</div>
+      <div class="discovery-step">
+        <div class="discovery-kicker found">${escapeHtml(t.skillFound)}</div>
+        <div class="skill-card-head" style="margin-bottom:0">
+          <div class="skill-icon">${getSkillIcon(skill.name)}</div>
+          <h3 class="discovery-skill-name" style="margin:0">${escapeHtml(skill.name || '')}</h3>
+        </div>
+      </div>
+      <div class="why-box">
+        <div class="discovery-kicker" style="color:var(--rust)">${escapeHtml(t.whyLabel)}</div>
+        <ul>${whyList || '<li>' + escapeHtml(skill.observedBehaviour || '') + '</li>'}</ul>
+      </div>
+      <span class="transfer-badge">${escapeHtml(t.transferable)}</span>
+      ${skill.certification ? '<div class="cert-text" style="margin-top:12px;">' + escapeHtml(skill.certification) + '</div>' : ''}
+      ${certHtml}
+      <div class="evidence-chain">
+        ${evidenceRow(1, t.evidenceWords, quote)}
+        ${evidenceRow(2, t.evidenceBehaviour, skill.observedBehaviour || '')}
+        ${evidenceRow(3, t.evidenceSkill, skill.name || '')}
+        ${evidenceRow(4, t.evidenceUse, skill.evidenceUse || '')}
+      </div>`;
+    container.appendChild(card);
+  });
+
+  const dirContainer = document.getElementById('directionsContainer');
+  dirContainer.innerHTML = '';
+  const directions = (data.directions || []).slice(0, 3);
+  if (!directions.length) {
+    document.getElementById('directionsSection').classList.add('hidden');
+  } else {
+    document.getElementById('directionsSection').classList.remove('hidden');
+    directions.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'direction-card';
+      el.innerHTML = `
+        <h4>${escapeHtml(d.title || '')}</h4>
+        <dl class="direction-dl">
+          <dt>${escapeHtml(t.dirWhy)}</dt><dd>${escapeHtml(d.whyMatch || '')}</dd>
+          <dt>${escapeHtml(t.dirHas)}</dt><dd>${escapeHtml(d.alreadyHas || '')}</dd>
+          <dt>${escapeHtml(t.dirMissing)}</dt><dd>${escapeHtml(d.missing || '')}</dd>
+          <dt>${escapeHtml(t.dirStep)}</dt><dd>${escapeHtml(d.firstStep || '')}</dd>
+        </dl>`;
+      dirContainer.appendChild(el);
+    });
+  }
+
+  const proof = data.firstProofOfWork || {};
+  document.getElementById('proofHero').innerHTML = proof.title
+    ? '<div class="proof-kicker">' + escapeHtml(t.proofKicker) + '</div>'
+      + '<p><strong>' + escapeHtml(proof.title) + '</strong></p>'
+      + (proof.description ? '<p class="proof-detail">' + escapeHtml(proof.description) + '</p>' : '')
+      + (proof.howTo ? '<p class="proof-detail">' + escapeHtml(proof.howTo) + '</p>' : '')
+    : '<div class="proof-kicker">' + escapeHtml(t.proofKicker) + '</div><p class="proof-detail">—</p>';
+
+  const planContainer = document.getElementById('planContainer');
+  planContainer.innerHTML = '';
+  (data.actionPlan || []).forEach((item, i) => {
+    const theme = item.theme || (t.weekThemes[i] || '');
+    const row = document.createElement('div');
+    row.className = 'week-row';
+    row.innerHTML = '<div class="week-num">' + escapeHtml(item.week || '') + '<div class="week-theme">' + escapeHtml(theme) + '</div></div><div class="week-task">' + escapeHtml(item.task || '') + '</div>';
+    planContainer.appendChild(row);
+  });
+
+  const passportText = buildPassportText(data);
+  document.getElementById('passportBody').textContent = passportText;
+}
+
+function evidenceRow(num, label, text) {
+  if (!text) return '';
+  return '<div class="evidence-row"><div class="evidence-num">' + num + '</div><div><div class="evidence-label">' + escapeHtml(label) + '</div><div>' + escapeHtml(text) + '</div></div></div>';
+}
+
+function buildPassportText(data) {
+  const t = T[currentLang];
+  const lines = ['=== ' + t.passportTitle + ' ===', ''];
+  if (data.fitSummary) lines.push(t.fitTitle + ': ' + data.fitSummary, '');
+  (data.skills || []).forEach((s, i) => {
+    lines.push((i + 1) + '. ' + (s.name || ''));
+    if (s.userQuote || s.quote) lines.push('   "' + (s.userQuote || s.quote) + '"');
+    (s.whyReasons || []).forEach(w => lines.push('   • ' + w));
+    lines.push('');
+  });
+  (data.directions || []).slice(0, 3).forEach(d => {
+    lines.push('→ ' + (d.title || ''));
+    lines.push('  ' + t.dirStep + ': ' + (d.firstStep || ''));
+  });
+  lines.push('');
+  const p = data.firstProofOfWork || {};
+  if (p.title) lines.push(t.proofKicker + ': ' + p.title, p.description || '', '');
+  if (data.passportNextStep) lines.push('Next: ' + data.passportNextStep);
+  return lines.join('\n').trim();
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function getPassportText() {
+  return document.getElementById('passportBody').textContent || buildPassportText(lastResult || {});
+}
+
+function copyPassport() {
+  const text = getPassportText();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    const tr = T[currentLang];
+    btn.textContent = tr.copiedBtn;
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = tr.copyBtn; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {});
+}
+
+async function sharePassport() {
+  const text = getPassportText();
+  const tr = T[currentLang];
+  const title = tr.passportTitle;
+  try {
+    if (navigator.share) {
+      await navigator.share({ title, text });
+      const btn = document.getElementById('shareBtn');
+      btn.textContent = tr.sharedBtn;
+      setTimeout(() => { btn.textContent = tr.shareBtn; }, 2000);
+    } else {
+      copyPassport();
+    }
+  } catch (_) { /* user cancelled share */ }
+}
+
+function restart() {
+  conversation = [];
+  lastResult = null;
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-chat').classList.add('hidden');
+  document.getElementById('screen-intro').classList.remove('hidden');
+}
+
+/* Init */
+applyTranslations();
+</script>
+</body>
+</html>
