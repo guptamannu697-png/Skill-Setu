@@ -890,8 +890,22 @@
   .results-listen.speaking { border-color: var(--teal-light); color: var(--teal); background: var(--marigold-soft); }
 
   /* ---------- Learn link & direction time-fit ---------- */
-  /* Tappable pill links: learning videos and passport resources */
-  .learn-link, .resource-link {
+  /* Learning link: filled CTA with the same visual weight as .btn-primary */
+  .learn-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 14px 0 0; padding: 10px 16px; border-radius: 10px;
+    background: var(--rust); color: #FBF6ED; border: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.2;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(181, 80, 42, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .learn-link svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .learn-link:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(181, 80, 42, 0.3); }
+  .learn-link:active { transform: translateY(0); }
+
+  /* Passport resource links: lighter pill */
+  .resource-link {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 10px; border-radius: 20px;
     background: var(--marigold-soft); border: 1px solid var(--marigold);
@@ -899,10 +913,12 @@
     color: var(--rust); text-decoration: none; line-height: 1.2;
     transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .learn-link { margin: 12px 0 0; }
-  .learn-link svg, .resource-link svg { width: 14px; height: 14px; flex-shrink: 0; }
-  .learn-link:hover, .resource-link:hover { border-color: var(--rust); text-decoration: underline; }
+  .resource-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .resource-link:hover { border-color: var(--rust); text-decoration: underline; }
   .learn-link:focus-visible, .resource-link:focus-visible { outline: 2px solid var(--teal-light); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    .learn-link, .learn-link:hover { transition: none; transform: none; }
+  }
   .passport-evidence .pe-item + .pe-item { margin-top: 10px; }
   .passport-evidence .resource-desc { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
   .direction-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
