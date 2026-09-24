@@ -870,6 +870,33 @@
   }
   .passport-evidence .pe-item { font-size: 14px; line-height: 1.55; color: var(--ink); }
   .passport-evidence .pe-tag { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+  .passport-evidence a { color: var(--rust); font-weight: 600; }
+
+  /* ---------- Audio (speechSynthesis) ---------- */
+  .bubble-row {
+    display: flex; align-items: flex-end; gap: 6px;
+    align-self: flex-start; max-width: 92%;
+  }
+  .bubble-row .bubble { max-width: 100%; }
+  .speak-btn {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--card-bg); color: var(--teal);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+  }
+  .speak-btn:hover, .speak-btn.speaking { border-color: var(--teal-light); background: var(--marigold-soft); }
+  .speak-btn svg { width: 16px; height: 16px; }
+  .results-listen { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; }
+  .results-listen svg { width: 15px; height: 15px; }
+  .results-listen.speaking { border-color: var(--teal-light); color: var(--teal); background: var(--marigold-soft); }
+
+  /* ---------- Learn link & direction time-fit ---------- */
+  .learn-link {
+    display: inline-block; margin: 12px 0 0 8px; font-size: 13px; font-weight: 600;
+    color: var(--rust); text-decoration: none;
+  }
+  .learn-link:hover { text-decoration: underline; }
+  .direction-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .direction-head h4 { margin: 0; }
 
   @media (max-width: 420px) {
     .intro h2 { font-size: 24px; }
@@ -973,6 +1000,9 @@
       <svg class="flourish" viewBox="0 0 46 10" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 5 C 8 -2, 15 12, 23 5 C 31 -2, 38 12, 46 5" stroke="var(--rust)" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
+      <div>
+        <button class="btn-ghost results-listen" id="listenBtn" type="button" onclick="listenResults()"></button>
+      </div>
     </div>
     <div id="fitSummary" class="fit-summary hidden"></div>
     <div id="skillCardsContainer"></div>
@@ -996,6 +1026,8 @@
       <p class="passport-sub" id="passportSub"></p>
       <p class="passport-body" id="passportBody"></p>
       <div id="passportEvidence" class="passport-evidence hidden"></div>
+      <div id="passportResources" class="passport-evidence"></div>
+      <p class="passport-sub" id="passportShareNote"></p>
       <div class="passport-actions">
         <button class="copy-btn" id="copyBtn" type="button" onclick="copyPassport()"></button>
         <button class="copy-btn" id="shareBtn" type="button" style="background:var(--rust)" onclick="sharePassport()"></button>
@@ -1094,6 +1126,17 @@ const T = {
     openingQuestion: "Namaste! Main Skill Setu hoon. Shuru karte hain aapki roz ki zindagi se — bina resume ke, bina form ke. Aaj aap ghar ya parivaar ke liye kya-kya sambhalti hain? Jaise khana, budget, bachon ki padhai, koi function… jo bhi sach ho, wahi likhiye.",
     errorMsg: "Maaf kijiye, kuch dikkat aa gayi. Kripya dobara try karein.",
     reportErrorMsg: "Maaf kijiye, report banane mein dikkat aayi. Kripya dobara try karein.",
+    speakLabel: "Sunein",
+    listenBtn: "Sunein",
+    stopBtn: "Rokein",
+    topSkillIntro: "Aapki sabse mazboot skill hai",
+    learnLink: "Seekhein →",
+    shareNote: "Share karne se pehle personal family details check kar lijiye. Skill Setu kisi income ya job ka guarantee nahi deta.",
+    resourcesLabel: "General resources",
+    resources: [
+      { name: "HerKey", url: "https://www.herkey.com", host: "herkey.com", desc: "career-break ke baad kaam dhoondh rahi mahilaon ke liye platform" },
+      { name: "SHEROES", url: "https://sheroes.com", host: "sheroes.com", desc: "sirf mahilaon ki WFH aur career community" }
+    ],
     languageInstruction: "Reply in simple Hindi/Hinglish (Hindi written in Roman/Latin script, mixed naturally with English words as commonly spoken)."
   },
   en: {
@@ -1138,6 +1181,17 @@ const T = {
     openingQuestion: "Hi — I'm Skill Setu. Let's start with your everyday life — no resume, no form. What do you take care of at home or for your family today? Cooking, budget, teaching kids, organizing a function… whatever is true for you.",
     errorMsg: "Sorry, something went wrong. Please try again.",
     reportErrorMsg: "Sorry, there was a problem generating your report. Please try again.",
+    speakLabel: "Listen",
+    listenBtn: "Listen",
+    stopBtn: "Stop",
+    topSkillIntro: "Your strongest skill is",
+    learnLink: "Learn →",
+    shareNote: "Please check personal/family details before sharing. Skill Setu does not guarantee any income or job.",
+    resourcesLabel: "General resources",
+    resources: [
+      { name: "HerKey", url: "https://www.herkey.com", host: "herkey.com", desc: "platform for women returning after a career break" },
+      { name: "SHEROES", url: "https://sheroes.com", host: "sheroes.com", desc: "women-only WFH and career community" }
+    ],
     languageInstruction: "Reply in simple, warm, plain English."
   }
 };
@@ -1163,17 +1217,17 @@ Do not assign skill names or categories in chat. Do not guarantee income. Do not
 
 const SKILL_TABLE = `## SKILL GROUNDING TABLE (map her answers ONLY to these categories — do not invent skills or income paths outside this list)
 
-1. Culinary/Food Prep -> Home tiffin service, small catering | Links: local WhatsApp/Facebook groups, Swiggy/Zomato cloud kitchen, FSSAI registration | Gap: pricing, hygiene/packaging | No certification required (FSSAI recommended)
+1. Culinary/Food Prep -> Home tiffin service, small catering, packaged home foods (pickles/papad/masala) | Links: local WhatsApp/Facebook groups, Swiggy/Zomato cloud kitchen, FSSAI registration, Amazon Saheli (packaged foods only, after FSSAI) | Gap: pricing, hygiene/packaging | No certification required (FSSAI recommended)
 2. Baking -> Home bakery via WhatsApp/Instagram | Links: Instagram Business | Gap: costing, shelf-life/packaging | Optional short course
-3. Tailoring & Alterations -> Alteration service, custom stitching | Links: Meesho seller app, Instagram Business, local WhatsApp groups | Gap: pricing, no digital presence | No certification required
-4. Embroidery/Mehendi/Handicrafts -> Mehendi for events, handmade product sales | Links: Meesho, Instagram, Etsy India | Gap: photography of work, online selling | No certification required
+3. Tailoring & Alterations -> Alteration service, custom stitching | Links: Mahila E-Haat (government platform, free, zero fee — list first), Meesho seller app, Amazon Saheli / Amazon Karigar, Instagram Business, local WhatsApp groups | Gap: pricing, no digital presence | No certification required
+4. Embroidery/Mehendi/Handicrafts -> Mehendi for events, handmade product sales | Links: Mahila E-Haat (government platform, free, zero fee — list first), Meesho, Amazon Saheli / Amazon Karigar, Instagram, Etsy India | Gap: photography of work, online selling | No certification required
 5. Household Budgeting & Money Management -> Budget coaching for other families | Links: Selyst, WhatsApp/Instagram direct outreach | Gap: formalizing into a paid service, no credibility signal | No certification required (basic course adds trust)
 6. Bookkeeping & Basic Accounts -> Data entry/bookkeeping for local shops | Links: Truelancer, Freelancer, Upwork India | Gap: Tally/Excel skills, client access | Recommended: basic Tally/Excel course
 7. Academic Tutoring -> Home tuition, online tutoring | Links: UrbanPro, Vedantu | Gap: no formal credential, low confidence pricing | No certification for school-level
 8. Skill Coaching (music/dance/art/yoga) -> Home classes, community workshops | Links: UrbanPro, local community halls, Instagram | Gap: structuring curriculum, marketing | No certification (yoga: certificate builds trust)
 9. Event & Function Organising -> Small event planning, decor coordination | Links: WedMeGood, Weddingkart, ShaadiSaga | Gap: vendor network, no portfolio | No certification required
 10. Customer Handling & Communication -> Telecalling, reception, part-time sales | Links: Apna.co, Naukri, Internshala | Gap: no formal resume/interview experience | No certification required
-11. Sales, Negotiation & Reselling -> Reselling via WhatsApp/Meesho, vendor sourcing | Links: Meesho, GlowRoad | Gap: digital payment/listing skills | No certification required
+11. Sales, Negotiation & Reselling -> Reselling via WhatsApp/Meesho, vendor sourcing | Links: Mahila E-Haat (government platform, free, zero fee — list first), Meesho, Amazon Saheli / Amazon Karigar, GlowRoad | Gap: digital payment/listing skills | No certification required
 12. Household Operations & Scheduling -> Personal assistant/admin support | Links: Apna.co, Upwork (virtual assistant) | Gap: no formal "admin" framing of experience | No certification required
 13. Beauty & Grooming -> Home salon, freelance makeup | Links: Urban Company partner registration | Gap: formal training, hygiene certification | RECOMMENDED: basic beauty course
 14. Childcare -> Daycare help, babysitting, roles at childcare institutions | Links: CareOff, YouChooseWork, local playschools | Gap: formal safety/first-aid knowledge | RECOMMENDED: basic child safety/first-aid
@@ -1189,7 +1243,8 @@ const SKILL_TABLE = `## SKILL GROUNDING TABLE (map her answers ONLY to these cat
 - Never fabricate experience she did not describe. Never use fake confidence scores or percentages.
 - No medical, legal, or personal financial advice — only exploratory direction.
 - Never present any suggestion as a final decision — frame as "options to explore" and verify locally before money or time.
-- If evidence is weak or no category fits, return fewer skills or note uncertainty — do not force a mismatch.`;
+- If evidence is weak or no category fits, return fewer skills or note uncertainty — do not force a mismatch.
+- When listing selling platforms for #3, #4 or #11, name Mahila E-Haat first (free government platform, zero fee), then Meesho, then Amazon Saheli / Amazon Karigar.`;
 
 const DEMO_ANSWERS = {
   hi: [
@@ -1255,6 +1310,10 @@ function applyTranslations() {
   document.getElementById('shareBtn').textContent = t.shareBtn;
   document.getElementById('safetyNote').textContent = t.safetyNote;
   document.getElementById('restartBtn').textContent = t.restartBtn;
+  document.getElementById('passportShareNote').textContent = t.shareNote;
+  renderPassportResources();
+  stopSpeaking();
+  resetListenBtn();
 
   document.getElementById('langBtnHi').classList.toggle('active', currentLang === 'hi');
   document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
@@ -1304,9 +1363,101 @@ function renderChat() {
     const div = document.createElement('div');
     div.className = 'bubble ' + msg.role;
     div.textContent = msg.content;
-    log.appendChild(div);
+    if (msg.role === 'assistant' && canSpeak()) {
+      const row = document.createElement('div');
+      row.className = 'bubble-row';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'speak-btn';
+      btn.setAttribute('aria-label', T[currentLang].speakLabel);
+      btn.title = T[currentLang].speakLabel;
+      btn.innerHTML = SPEAKER_SVG;
+      btn.onclick = () => speakText(msg.content, btn);
+      row.appendChild(div);
+      row.appendChild(btn);
+      log.appendChild(row);
+    } else {
+      log.appendChild(div);
+    }
   });
   log.scrollTop = log.scrollHeight;
+}
+
+/* ============ AUDIO (browser speechSynthesis) ============ */
+const SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5 h3.5 L12 5.5 v13 L7.5 14.5 H4 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 9 c1.3 1.6 1.3 4.4 0 6 M18.2 6.5 c2.6 3 2.6 8 0 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+let speakingBtn = null;
+
+function canSpeak() {
+  return 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+}
+
+function pickVoice(lang) {
+  const voices = window.speechSynthesis.getVoices();
+  // Hinglish is Roman script, so an Indian-English voice is a sensible fallback
+  // on devices without a Hindi voice.
+  const prefs = lang === 'hi' ? ['hi-IN', 'hi', 'en-IN'] : ['en-IN', 'en-US', 'en-GB', 'en'];
+  for (const p of prefs) {
+    const v = voices.find(v => v.lang.replace('_', '-').toLowerCase().startsWith(p.toLowerCase()));
+    if (v) return v;
+  }
+  return null;
+}
+
+function stopSpeaking() {
+  if (canSpeak()) window.speechSynthesis.cancel();
+  if (speakingBtn) speakingBtn.classList.remove('speaking');
+  speakingBtn = null;
+}
+
+// Speaks text in the current UI language. Clicking the same button again stops it.
+function speakText(text, btn, onEnd) {
+  if (!canSpeak() || !text) return;
+  const wasSame = speakingBtn === btn && window.speechSynthesis.speaking;
+  stopSpeaking();
+  if (wasSame) { if (onEnd) onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  const voice = pickVoice(currentLang);
+  u.lang = voice ? voice.lang : (currentLang === 'hi' ? 'hi-IN' : 'en-IN');
+  if (voice) u.voice = voice;
+  u.rate = 0.95;
+  const done = () => {
+    if (speakingBtn === btn) { btn.classList.remove('speaking'); speakingBtn = null; }
+    if (onEnd) onEnd();
+  };
+  u.onend = done;
+  u.onerror = done;
+  speakingBtn = btn;
+  btn.classList.add('speaking');
+  window.speechSynthesis.speak(u);
+}
+
+function resetListenBtn() {
+  const btn = document.getElementById('listenBtn');
+  if (!btn) return;
+  btn.hidden = !canSpeak();
+  btn.innerHTML = SPEAKER_SVG + '<span>' + escapeHtml(T[currentLang].listenBtn) + '</span>';
+}
+
+function listenResults() {
+  const btn = document.getElementById('listenBtn');
+  const t = T[currentLang];
+  const data = lastResult || {};
+  const top = (data.skills || [])[0];
+  const parts = [t.resultsHeadline + '.'];
+  if (top) {
+    parts.push(t.topSkillIntro + ': ' + (top.name || '') + '.');
+    const why = (top.whyReasons || [])[0] || top.observedBehaviour || '';
+    if (why) parts.push(why);
+  }
+  const willStart = !(speakingBtn === btn && window.speechSynthesis.speaking);
+  speakText(parts.join(' '), btn, resetListenBtn);
+  if (willStart) btn.innerHTML = SPEAKER_SVG + '<span>' + escapeHtml(t.stopBtn) + '</span>';
+}
+
+if (canSpeak()) {
+  // Chrome loads voices asynchronously; touching getVoices() warms the list.
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
 
 function showTyping() {
@@ -1388,6 +1539,8 @@ From the conversation below, identify 1–3 skills with STRONG evidence only. Ma
 
 Write ALL user-facing text in the language specified above. Never include confidence scores, percentages, or salary figures.
 
+For each direction, "hoursPerWeek" and "mode" MUST come directly from what she said in the chat about her available time and where she wants to work (home → Local or Async, local area → Local, online → Remote/Async). Use her stated weekly hours exactly as she gave them (e.g. she said "10-12 ghante" → "10-12 hrs/week") on every direction — do NOT divide, split or reduce them across directions, and never exceed them. If she did not state her time or location, use an empty string for that field — do not invent it.
+
 Conversation transcript:
 ${transcript}
 
@@ -1411,7 +1564,9 @@ Respond with ONLY valid JSON (no markdown fences):
       "whyMatch": "Why it fits her evidence and fit",
       "alreadyHas": "What she already brings",
       "missing": "Honest gap — no shame",
-      "firstStep": "One small actionable step this week"
+      "firstStep": "One small actionable step this week",
+      "hoursPerWeek": "e.g. 5-8 hrs/week — based on what she said she can give",
+      "mode": "e.g. Async / Remote / Local — based on her stated preference"
     }
   ],
   "firstProofOfWork": {
@@ -1484,6 +1639,8 @@ function renderResults(data) {
   document.getElementById('screen-results').classList.remove('hidden');
   window.scrollTo(0, 0);
   const t = T[currentLang];
+  stopSpeaking();
+  resetListenBtn();
 
   const fitEl = document.getElementById('fitSummary');
   if (data.fitSummary) {
@@ -1524,6 +1681,7 @@ function renderResults(data) {
         <ul>${whyList || '<li>' + escapeHtml(skill.observedBehaviour || '') + '</li>'}</ul>
       </div>
       <span class="transfer-badge">${escapeHtml(t.transferable)}</span>
+      <a class="learn-link" href="${escapeHtml(getLearnUrl(skill.name))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t.learnLink)}</a>
       ${skill.certification ? '<div class="cert-text" style="margin-top:12px;">' + escapeHtml(skill.certification) + '</div>' : ''}
       ${certHtml}
       <div class="evidence-chain">
@@ -1545,8 +1703,12 @@ function renderResults(data) {
     directions.forEach(d => {
       const el = document.createElement('div');
       el.className = 'direction-card';
+      const fit = directionFitText(d);
       el.innerHTML = `
-        <h4>${escapeHtml(d.title || '')}</h4>
+        <div class="direction-head">
+          <h4>${escapeHtml(d.title || '')}</h4>
+          ${fit ? '<span class="transfer-badge">⏱ ' + escapeHtml(fit) + '</span>' : ''}
+        </div>
         <dl class="direction-dl">
           <dt>${escapeHtml(t.dirWhy)}</dt><dd>${escapeHtml(d.whyMatch || '')}</dd>
           <dt>${escapeHtml(t.dirHas)}</dt><dd>${escapeHtml(d.alreadyHas || '')}</dd>
@@ -1582,12 +1744,39 @@ function renderResults(data) {
   updatePassportEvidence();
 }
 
+// Time-fit badge text for a direction, e.g. "10-12 hrs/week · Local".
+function directionFitText(d) {
+  return [d.hoursPerWeek, d.mode].map(s => (s || '').trim()).filter(Boolean).join(' · ');
+}
+
+// Curated learning link per skill; everything else falls back to a YouTube search.
+function getLearnUrl(name) {
+  const n = (name || '').toLowerCase();
+  if (/culinary|food prep/.test(n)) return 'https://www.youtube.com/@NishaMadhulika';
+  if (/tailor/.test(n)) return 'https://www.youtube.com/results?search_query=' + encodeURIComponent('Tailoring in Hindi') + '&sp=EgIQAg%3D%3D';
+  if (/self-taught|ai upskill/.test(n)) return 'https://academy.openai.com';
+  const suffix = currentLang === 'hi' ? ' tutorial hindi' : ' tutorial for beginners';
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent((name || '') + suffix);
+}
+
+function renderPassportResources() {
+  const el = document.getElementById('passportResources');
+  if (!el) return;
+  const t = T[currentLang];
+  el.innerHTML = '<span class="pe-label">' + escapeHtml(t.resourcesLabel) + '</span>' +
+    t.resources.map(r =>
+      '<div class="pe-item"><a href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(r.name) + '</a> (' + escapeHtml(r.host) + ') — ' + escapeHtml(r.desc) + '</div>'
+    ).join('');
+}
+
 function evidenceRow(num, label, text) {
   if (!text) return '';
   return '<div class="evidence-row"><div class="evidence-num">' + num + '</div><div><div class="evidence-label">' + escapeHtml(label) + '</div><div>' + escapeHtml(text) + '</div></div></div>';
 }
 
-function buildPassportText(data) {
+// includeResources: true for copy/share text; the on-screen passport shows
+// resources in their own #passportResources section instead.
+function buildPassportText(data, includeResources) {
   const t = T[currentLang];
   const lines = ['=== ' + t.passportTitle + ' ===', ''];
   if (data.fitSummary) lines.push(t.fitTitle + ': ' + data.fitSummary, '');
@@ -1598,7 +1787,8 @@ function buildPassportText(data) {
     lines.push('');
   });
   (data.directions || []).slice(0, 3).forEach(d => {
-    lines.push('→ ' + (d.title || ''));
+    const fit = directionFitText(d);
+    lines.push('→ ' + (d.title || '') + (fit ? ' (' + fit + ')' : ''));
     lines.push('  ' + t.dirStep + ': ' + (d.firstStep || ''));
   });
   lines.push('');
@@ -1608,6 +1798,10 @@ function buildPassportText(data) {
     lines.push(t.practice.passportLabel + ': ' + practiceEvidence.detail + ' (' + t.practice.passportTag + ')', '');
   }
   if (data.passportNextStep) lines.push('Next: ' + data.passportNextStep);
+  if (includeResources) {
+    lines.push('', t.resourcesLabel + ':');
+    t.resources.forEach(r => lines.push('• ' + r.name + ' (' + r.host + ') — ' + r.desc));
+  }
   return lines.join('\n').trim();
 }
 
@@ -1618,7 +1812,7 @@ function escapeHtml(str) {
 }
 
 function getPassportText() {
-  return document.getElementById('passportBody').textContent || buildPassportText(lastResult || {});
+  return buildPassportText(lastResult || {}, true);
 }
 
 function copyPassport() {
@@ -1652,6 +1846,7 @@ function restart() {
   conversation = [];
   lastResult = null;
   practiceEvidence = null;
+  stopSpeaking();
   currentModuleId = null;
   document.getElementById('screen-practice').classList.add('hidden');
   document.getElementById('screen-results').classList.add('hidden');
