@@ -30,7 +30,9 @@ module.exports = async (req, res) => {
 
     const groqBody = {
       model: 'openai/gpt-oss-120b',
-      max_completion_tokens: isExtract ? 3000 : 400,
+      // gpt-oss spends part of this budget on hidden reasoning; too small a cap
+      // for chat left no room for the reply and returned empty content.
+      max_completion_tokens: isExtract ? 3000 : 1000,
       messages: [
         {
           role: 'user',
@@ -38,6 +40,11 @@ module.exports = async (req, res) => {
         }
       ]
     };
+
+    // A short follow-up question needs little reasoning; keep it light and fast.
+    if (!isExtract) {
+      groqBody.reasoning_effort = 'low';
+    }
 
     // Force the final Skill Report to be JSON
     if (isExtract) {
