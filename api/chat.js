@@ -46,17 +46,29 @@ module.exports = async (req, res) => {
       };
     }
 
-    const response = await fetch(
-      'https://api.groq.com/openai/v1/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(groqBody)
-      }
-    );
+    // On a 429 rate limit, wait 2s and retry, then 4s and retry once more.
+    const retryDelaysMs = [2000, 4000];
+    let response;
+    for (let attempt = 0; ; attempt++) {
+      response = await fetch(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(groqBody)
+        }
+      );
+
+      if (response.status !== 429 || attempt >= retryDelaysMs.length) break;
+
+      await response.text().catch(() => {}); // free the connection before retrying
+      const delay = retryDelaysMs[attempt];
+      console.warn(`Groq rate limited (429), retry ${attempt + 1} in ${delay}ms`);
+      await new Promise(r => setTimeout(r, delay));
+    }
 
     const data = await response.json();
 
