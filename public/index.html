@@ -899,6 +899,43 @@
   .direction-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
   .direction-head h4 { margin: 0; }
 
+  /* ---------- Welcome block ---------- */
+  .welcome-block {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin: 0 0 22px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .welcome-block p {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 12px 0 0;
+  }
+  .speaker-btn { display: inline-flex; align-items: center; gap: 6px; }
+  .speaker-btn.speaking { border-color: var(--teal-light); color: var(--teal); background: var(--marigold-soft); }
+
+  /* ---------- Discovery timer ---------- */
+  .timer-badge {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--marigold-soft);
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-top: 14px;
+  }
+  .timer-subtext {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 6px 0 0;
+  }
+
   /* ---------- Footer ---------- */
   .app-footer {
     text-align: center;
@@ -983,6 +1020,12 @@
 
   <!-- ============ INTRO SCREEN ============ -->
   <div id="screen-intro" class="intro">
+    <div class="welcome-block">
+      <button class="btn-ghost speaker-btn" id="welcomeSpeakBtn" type="button" onclick="speakWelcome()" aria-label="Sunein">
+        🔊 <span id="welcomeSpeakLabel"></span>
+      </button>
+      <p id="welcomeText"></p>
+    </div>
     <div class="intro-meta" id="introMeta"><span class="intro-meta-dot" aria-hidden="true"></span><span id="introMetaText"></span></div>
     <h2 id="introHeadline"></h2>
     <p id="introP1"></p>
@@ -1018,6 +1061,12 @@
       </svg>
       <div>
         <button class="btn-ghost results-listen" id="listenBtn" type="button" onclick="listenResults()"></button>
+      </div>
+      <div id="timerWrap" hidden>
+        <div class="timer-badge">
+          ⏱ <span id="timerText"></span>
+        </div>
+        <p class="timer-subtext" id="timerSubtext"></p>
       </div>
     </div>
     <div id="fitSummary" class="fit-summary hidden"></div>
@@ -1148,6 +1197,10 @@ const T = {
     openingQuestion: "Namaste! Main Skill Setu hoon. Shuru karte hain aapki roz ki zindagi se — bina resume ke, bina form ke. Aaj aap ghar ya parivaar ke liye kya-kya sambhalti hain? Jaise khana, budget, bachon ki padhai, koi function… jo bhi sach ho, wahi likhiye.",
     errorMsg: "Maaf kijiye, kuch dikkat aa gayi. Kripya dobara try karein.",
     reportErrorMsg: "Maaf kijiye, report banane mein dikkat aayi. Kripya dobara try karein.",
+    welcomeText: "Namaste! Aaj hum aapki kahani sunenge — aur dikhayenge ki aap kitni kaabil hain, jo aap khud abhi tak nahi jaanti thi.",
+    welcomeSpeakLabel: "Sunein",
+    timerLabel: "Discover ho gaya sirf {time} mein",
+    timerSubtext: "Career counselor se ye pata karne mein aam taur par kai sessions lagte hain",
     speakLabel: "Sunein",
     listenBtn: "Sunein",
     stopBtn: "Rokein",
@@ -1204,6 +1257,10 @@ const T = {
     openingQuestion: "Hi — I'm Skill Setu. Let's start with your everyday life — no resume, no form. What do you take care of at home or for your family today? Cooking, budget, teaching kids, organizing a function… whatever is true for you.",
     errorMsg: "Sorry, something went wrong. Please try again.",
     reportErrorMsg: "Sorry, there was a problem generating your report. Please try again.",
+    welcomeText: "Welcome! Today we'll listen to your story — and show you just how capable you already are.",
+    welcomeSpeakLabel: "Listen",
+    timerLabel: "Discovered in just {time}",
+    timerSubtext: "Finding this out through a career counselor usually takes multiple sessions",
     speakLabel: "Listen",
     listenBtn: "Listen",
     stopBtn: "Stop",
@@ -1334,9 +1391,14 @@ function applyTranslations() {
   document.getElementById('safetyNote').textContent = t.safetyNote;
   document.getElementById('restartBtn').textContent = t.restartBtn;
   document.getElementById('passportShareNote').textContent = t.shareNote;
+  document.getElementById('welcomeText').textContent = t.welcomeText;
+  document.getElementById('welcomeSpeakLabel').textContent = t.welcomeSpeakLabel;
+  document.getElementById('welcomeSpeakBtn').setAttribute('aria-label', t.welcomeSpeakLabel);
+  document.getElementById('welcomeSpeakBtn').hidden = !canSpeak();
   renderPassportResources();
   stopSpeaking();
   resetListenBtn();
+  renderTimer();
 
   document.getElementById('langBtnHi').classList.toggle('active', currentLang === 'hi');
   document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
@@ -1354,6 +1416,7 @@ function setLang(lang) {
 }
 
 function startChat() {
+  stopSpeaking();
   document.getElementById('screen-intro').classList.add('hidden');
   document.getElementById('screen-chat').classList.remove('hidden');
   conversation = [{ role: 'assistant', content: T[currentLang].openingQuestion }];
@@ -1363,6 +1426,7 @@ function startChat() {
 }
 
 function startDemo() {
+  stopSpeaking();
   document.getElementById('screen-intro').classList.add('hidden');
   document.getElementById('screen-chat').classList.remove('hidden');
   conversation = [{ role: 'assistant', content: T[currentLang].openingQuestion }];
@@ -1477,6 +1541,23 @@ function listenResults() {
   if (willStart) btn.innerHTML = SPEAKER_SVG + '<span>' + escapeHtml(t.stopBtn) + '</span>';
 }
 
+function speakWelcome() {
+  speakText(T[currentLang].welcomeText, document.getElementById('welcomeSpeakBtn'));
+}
+
+// Shows the measured discovery time; hidden when no real measurement exists.
+function renderTimer() {
+  const wrap = document.getElementById('timerWrap');
+  if (typeof window.__lastElapsedSec !== 'number') { wrap.hidden = true; return; }
+  const t = T[currentLang];
+  const mins = Math.floor(window.__lastElapsedSec / 60);
+  const secs = window.__lastElapsedSec % 60;
+  const timeStr = mins > 0 ? `${mins} min ${secs} sec` : `${secs} sec`;
+  document.getElementById('timerText').textContent = t.timerLabel.replace('{time}', timeStr);
+  document.getElementById('timerSubtext').textContent = t.timerSubtext;
+  wrap.hidden = false;
+}
+
 if (canSpeak()) {
   // Chrome loads voices asynchronously; touching getVoices() warms the list.
   window.speechSynthesis.getVoices();
@@ -1529,6 +1610,9 @@ async function submitAnswer(text) {
   const userTurns = conversation.filter(m => m.role === 'user').length;
 
   if (userTurns >= 5) {
+    // Real measured AI processing time only (starts when the 5th answer is submitted).
+    // Shared by startChat() and startDemo(), since both flows submit through here.
+    window.__discoveryStartTime = Date.now();
     showTyping();
     await generateResults();
     return;
@@ -1617,6 +1701,9 @@ Respond with ONLY valid JSON (no markdown fences):
     const cleaned = rawText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '');
     const result = JSON.parse(cleaned);
     lastResult = result;
+    const elapsedMs = Date.now() - (window.__discoveryStartTime || Date.now());
+    const elapsedSec = Math.round(elapsedMs / 1000);
+    window.__lastElapsedSec = elapsedSec;
     renderResults(result);
   } catch (err) {
     hideTyping();
@@ -1668,6 +1755,7 @@ function renderResults(data) {
   const t = T[currentLang];
   stopSpeaking();
   resetListenBtn();
+  renderTimer();
 
   const fitEl = document.getElementById('fitSummary');
   if (data.fitSummary) {
@@ -1874,6 +1962,7 @@ function restart() {
   conversation = [];
   lastResult = null;
   practiceEvidence = null;
+  window.__lastElapsedSec = undefined;
   stopSpeaking();
   currentModuleId = null;
   document.getElementById('screen-practice').classList.add('hidden');
