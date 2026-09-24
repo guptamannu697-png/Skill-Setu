@@ -936,6 +936,33 @@
     margin: 6px 0 0;
   }
 
+  /* ---------- Motivation quote & showcase ---------- */
+  .motivation-quote {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+    line-height: 1.5;
+  }
+  .showcase-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .showcase-card .evidence-chain { margin-top: 0; padding-top: 0; border-top: none; }
+  .showcase-encouragement {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--teal);
+    margin: 14px 0 0;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+
   /* ---------- Footer ---------- */
   .app-footer {
     text-align: center;
@@ -1059,6 +1086,7 @@
       <svg class="flourish" viewBox="0 0 46 10" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 5 C 8 -2, 15 12, 23 5 C 31 -2, 38 12, 46 5" stroke="var(--rust)" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
+      <p class="motivation-quote" id="motivationQuote"></p>
       <div>
         <button class="btn-ghost results-listen" id="listenBtn" type="button" onclick="listenResults()"></button>
       </div>
@@ -1085,6 +1113,10 @@
     <div class="plan-section">
       <h3 id="planTitle"></h3>
       <div id="planContainer"></div>
+    </div>
+    <div class="section-block" id="showcaseSection">
+      <h3 id="showcaseTitle"></h3>
+      <div class="showcase-card" id="showcaseCard"></div>
     </div>
     <div class="passport-card" id="passportCard">
       <h3 class="passport-title" id="passportTitle"></h3>
@@ -1190,7 +1222,11 @@ const T = {
     shareBtn: "Share",
     copiedBtn: "Copy ho gaya ✓",
     sharedBtn: "Share ho gaya ✓",
-    fitTitle: "Aapki fit",
+    fitTitle: "Aapka profile",
+    showcaseTitle: "Apna Kaam Dikhaiye",
+    showcaseEdit: "Free app jaise InShot ya VN se edit karein",
+    showcasePost: "Yahan post karein",
+    motivationQuote: "Jo hunar aap roz istemal karti hain, wahi kal aapki pehchaan ban sakta hai.",
     safetyNote: "Ye sujhaav shuruaati marg-darshan ke liye hain. Kisi bhi paise ya health se jude faisle se pehle, kripya sthaniya jaankari zaroor verify karein.",
     restartBtn: "Dobara shuru karein",
     certFlag: "⚠ Certification pehle zaroori hai",
@@ -1199,7 +1235,7 @@ const T = {
     reportErrorMsg: "Maaf kijiye, report banane mein dikkat aayi. Kripya dobara try karein.",
     welcomeText: "Namaste! Aaj hum aapki kahani sunenge — aur dikhayenge ki aap kitni kaabil hain, jo aap khud abhi tak nahi jaanti thi.",
     welcomeSpeakLabel: "Sunein",
-    timerLabel: "Discover ho gaya sirf {time} mein",
+    timerLabel: "Aapki report {time} mein tayar hui",
     timerSubtext: "Career counselor se ye pata karne mein aam taur par kai sessions lagte hain",
     speakLabel: "Sunein",
     listenBtn: "Sunein",
@@ -1251,6 +1287,10 @@ const T = {
     copiedBtn: "Copied ✓",
     sharedBtn: "Shared ✓",
     fitTitle: "Your fit",
+    showcaseTitle: "Show Your Work",
+    showcaseEdit: "Edit it with a free app like InShot or VN",
+    showcasePost: "Post it on",
+    motivationQuote: "The skill you use every day could become your identity tomorrow.",
     safetyNote: "These suggestions are a starting point, not final advice. Please verify locally before committing any money or making health-related decisions.",
     restartBtn: "Start over",
     certFlag: "⚠ Certification required first",
@@ -1259,7 +1299,7 @@ const T = {
     reportErrorMsg: "Sorry, there was a problem generating your report. Please try again.",
     welcomeText: "Welcome! Today we'll listen to your story — and show you just how capable you already are.",
     welcomeSpeakLabel: "Listen",
-    timerLabel: "Discovered in just {time}",
+    timerLabel: "Your report was ready in {time}",
     timerSubtext: "Finding this out through a career counselor usually takes multiple sessions",
     speakLabel: "Listen",
     listenBtn: "Listen",
@@ -1391,6 +1431,8 @@ function applyTranslations() {
   document.getElementById('safetyNote').textContent = t.safetyNote;
   document.getElementById('restartBtn').textContent = t.restartBtn;
   document.getElementById('passportShareNote').textContent = t.shareNote;
+  document.getElementById('motivationQuote').textContent = t.motivationQuote;
+  if (lastResult) renderShowcase(lastResult);
   document.getElementById('welcomeText').textContent = t.welcomeText;
   document.getElementById('welcomeSpeakLabel').textContent = t.welcomeSpeakLabel;
   document.getElementById('welcomeSpeakBtn').setAttribute('aria-label', t.welcomeSpeakLabel);
@@ -1691,6 +1733,11 @@ Respond with ONLY valid JSON (no markdown fences):
     {"week": "Week 3", "theme": "Create proof", "task": "..."},
     {"week": "Week 4", "theme": "Take first step", "task": "..."}
   ],
+  "showcaseSteps": {
+    "video": "One sentence: what kind of short video she could record of her work (specific to her top skill)",
+    "platform": "Where to post it (Instagram Reels / WhatsApp Status — generic, don't invent new platforms)",
+    "encouragement": "One warm, honest encouraging sentence — NO income figures, NO guarantees, just genuine encouragement based on her existing evidence"
+  },
   "passportNextStep": "One sentence — the very next thing to do after today",
   "uncertaintyNote": "optional — if evidence was limited"
 }`;
@@ -1853,11 +1900,35 @@ function renderResults(data) {
     planContainer.appendChild(row);
   });
 
+  renderShowcase(data);
+
   const passportText = buildPassportText(data);
   document.getElementById('passportBody').textContent = passportText;
 
   renderPracticeInvite();
   updatePassportEvidence();
+}
+
+// Showcase steps: AI video idea, fixed edit tip, AI platform. Empty if the AI sent nothing.
+function showcaseItems(data) {
+  const s = data.showcaseSteps || {};
+  if (!s.video && !s.platform) return [];
+  const post = s.platform ? T[currentLang].showcasePost + ': ' + s.platform : '';
+  return [s.video, T[currentLang].showcaseEdit, post].filter(Boolean);
+}
+
+function renderShowcase(data) {
+  const section = document.getElementById('showcaseSection');
+  const items = showcaseItems(data);
+  section.hidden = !items.length;
+  if (!items.length) return;
+  document.getElementById('showcaseTitle').textContent = T[currentLang].showcaseTitle;
+  const encouragement = (data.showcaseSteps || {}).encouragement;
+  document.getElementById('showcaseCard').innerHTML =
+    '<div class="evidence-chain">' +
+    items.map((s, i) => '<div class="evidence-row"><div class="evidence-num">' + (i + 1) + '</div><div>' + escapeHtml(s) + '</div></div>').join('') +
+    '</div>' +
+    (encouragement ? '<p class="showcase-encouragement">' + escapeHtml(encouragement) + '</p>' : '');
 }
 
 // Time-fit badge text for a direction, e.g. "10-12 hrs/week · Local".
@@ -1906,12 +1977,19 @@ function buildPassportText(data, includeResources) {
     const fit = directionFitText(d);
     lines.push('→ ' + (d.title || '') + (fit ? ' (' + fit + ')' : ''));
     lines.push('  ' + t.dirStep + ': ' + (d.firstStep || ''));
+    if (d.platforms) lines.push('  ' + t.dirPlatforms + ': ' + d.platforms);
   });
   lines.push('');
   const p = data.firstProofOfWork || {};
   if (p.title) lines.push(t.proofKicker + ': ' + p.title, p.description || '', '');
   if (practiceEvidence) {
     lines.push(t.practice.passportLabel + ': ' + practiceEvidence.detail + ' (' + t.practice.passportTag + ')', '');
+  }
+  const showcase = showcaseItems(data);
+  if (showcase.length) {
+    lines.push(t.showcaseTitle + ':');
+    showcase.forEach((s, i) => lines.push('  ' + (i + 1) + '. ' + s));
+    lines.push('');
   }
   if (data.passportNextStep) lines.push('Next: ' + data.passportNextStep);
   if (includeResources) {
