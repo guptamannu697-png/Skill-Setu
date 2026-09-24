@@ -26,15 +26,15 @@ No `package.json` required for runtime; backend uses native `fetch`.
 
 ## Product flow (UI)
 
-1. **Welcome** — warm headline, 2 min · 5 questions, start / demo
-2. **Conversation** — 5 turns; progress “Discovering your skills · n/5”; adaptive evidence questions (not a form)
+1. **Welcome** — warm headline, 2 min · 6 questions, start / demo
+2. **Conversation** — 6 turns; progress “Discovering your skills · n/6”; adaptive evidence questions (not a form)
 3. **Results** — Skill discovery cards, directions (2–3), first proof of work, 30-day plan, **Skill Passport** with copy/share
 
 ## AI rules (chat mode)
 
 - Warm, respectful, never patronizing; 2–4 sentences per reply
 - **Gather concrete evidence** before implying a skill; ask adaptive follow-ups (e.g. budget vs guests vs vendors)
-- Turns 1–3: daily life and what they handle; turns 4–5: lightweight **fit** (time, home/local/online, starting investment, work preference)
+- Turns 1–3: daily life and what they handle; turns 4–5: lightweight **fit** (time, home/local/online, starting investment, work preference); turn 6: gentle safety-net question for anything not yet discussed
 - Do not extract skills or assign categories in chat — that happens in extract mode
 - Match language: Hindi/Hinglish or English per user toggle
 
@@ -81,7 +81,7 @@ Visual reference: see `DESIGN.md` for Figma link.
 ## Testing checklist
 
 - [ ] Welcome copy and meta badge visible on mobile
-- [ ] Full chat: 5 answers → results without console errors
+- [ ] Full chat: 6 answers → results without console errors
 - [ ] Demo persona completes end-to-end
 - [ ] API errors show friendly messages (missing key / network)
 - [ ] Skill Passport copy and Web Share (or fallback copy)
