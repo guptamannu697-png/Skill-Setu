@@ -1111,6 +1111,7 @@ const T = {
     dirHas: "Jo aapke paas hai",
     dirMissing: "Jo abhi missing hai",
     dirStep: "Pehla step",
+    dirPlatforms: "Kahan bech/kaam kar sakti hain",
     proofKicker: "Pehla proof of work",
     planTitle: "30-Din Ka Plan",
     weekThemes: ["Prepare", "Practice", "Create proof", "Pehla step"],
@@ -1166,6 +1167,7 @@ const T = {
     dirHas: "What you already have",
     dirMissing: "What's missing",
     dirStep: "First step",
+    dirPlatforms: "Where to sell/work",
     proofKicker: "First proof of work",
     planTitle: "Your 30-day plan",
     weekThemes: ["Prepare", "Practice", "Create proof", "Take first step"],
@@ -1540,7 +1542,10 @@ From the conversation below, identify 1–3 skills with STRONG evidence only. Ma
 
 Write ALL user-facing text in the language specified above. Never include confidence scores, percentages, or salary figures.
 
-For each direction, "hoursPerWeek" and "mode" MUST come directly from what she said in the chat about her available time and where she wants to work (home → Local or Async, local area → Local, online → Remote/Async). Use her stated weekly hours exactly as she gave them (e.g. she said "10-12 ghante" → "10-12 hrs/week") on every direction — do NOT divide, split or reduce them across directions, and never exceed them. If she did not state her time or location, use an empty string for that field — do not invent it.
+For each direction, "hoursPerWeek" and "mode" MUST come directly from what she said in the chat about her available time and where she wants to work (home → Local or Async, local area → Local, online → Remote/Async). Use her stated weekly hours exactly as she gave them (e.g. she said "10-12 ghante" → "10-12 hrs/week") on every direction — do NOT divide, split or reduce them across directions, and never exceed them.
+Every direction MUST include both hoursPerWeek and mode fields, filled in based on her stated time/location preference from the chat — never leave these blank. Use the same hoursPerWeek and mode on every direction. Only if she truly never mentioned time or location, write "Flexible" for that field rather than inventing a number or place.
+
+For each direction, "platforms" MUST list 2-3 platform names copied from that skill's "Links" in the grounding table above (most relevant first; for #3, #4, #11 Mahila E-Haat comes first). Never invent platforms outside the table.
 
 Conversation transcript:
 ${transcript}
@@ -1566,8 +1571,9 @@ Respond with ONLY valid JSON (no markdown fences):
       "alreadyHas": "What she already brings",
       "missing": "Honest gap — no shame",
       "firstStep": "One small actionable step this week",
-      "hoursPerWeek": "e.g. 5-8 hrs/week — based on what she said she can give",
-      "mode": "e.g. Async / Remote / Local — based on her stated preference"
+      "hoursPerWeek": "REQUIRED, e.g. 5-8 hrs/week — based on what she said she can give",
+      "mode": "REQUIRED, e.g. Async / Remote / Local — based on her stated preference",
+      "platforms": "Comma-separated 2-3 specific platform names from SKILL_TABLE's Links for this skill (e.g. 'Meesho, Amazon Saheli, Mahila E-Haat') — pick most relevant, don't invent new ones"
     }
   ],
   "firstProofOfWork": {
@@ -1715,6 +1721,7 @@ function renderResults(data) {
           <dt>${escapeHtml(t.dirHas)}</dt><dd>${escapeHtml(d.alreadyHas || '')}</dd>
           <dt>${escapeHtml(t.dirMissing)}</dt><dd>${escapeHtml(d.missing || '')}</dd>
           <dt>${escapeHtml(t.dirStep)}</dt><dd>${escapeHtml(d.firstStep || '')}</dd>
+          <dt>${escapeHtml(t.dirPlatforms)}</dt><dd>${escapeHtml(d.platforms || '')}</dd>
         </dl>`;
       dirContainer.appendChild(el);
     });
