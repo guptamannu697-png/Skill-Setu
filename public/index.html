@@ -871,7 +871,6 @@
   }
   .passport-evidence .pe-item { font-size: 14px; line-height: 1.55; color: var(--ink); }
   .passport-evidence .pe-tag { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
-  .passport-evidence a { color: var(--rust); font-weight: 600; }
 
   /* ---------- Audio (speechSynthesis) ---------- */
   .bubble-row {
@@ -891,11 +890,21 @@
   .results-listen.speaking { border-color: var(--teal-light); color: var(--teal); background: var(--marigold-soft); }
 
   /* ---------- Learn link & direction time-fit ---------- */
-  .learn-link {
-    display: inline-block; margin: 12px 0 0 8px; font-size: 13px; font-weight: 600;
-    color: var(--rust); text-decoration: none;
+  /* Tappable pill links: learning videos and passport resources */
+  .learn-link, .resource-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px; border-radius: 20px;
+    background: var(--marigold-soft); border: 1px solid var(--marigold);
+    font-family: 'Work Sans', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--rust); text-decoration: none; line-height: 1.2;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .learn-link:hover { text-decoration: underline; }
+  .learn-link { margin: 12px 0 0; }
+  .learn-link svg, .resource-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .learn-link:hover, .resource-link:hover { border-color: var(--rust); text-decoration: underline; }
+  .learn-link:focus-visible, .resource-link:focus-visible { outline: 2px solid var(--teal-light); outline-offset: 2px; }
+  .passport-evidence .pe-item + .pe-item { margin-top: 10px; }
+  .passport-evidence .resource-desc { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
   .direction-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
   .direction-head h4 { margin: 0; }
 
@@ -1241,7 +1250,7 @@ const T = {
     listenBtn: "Sunein",
     stopBtn: "Rokein",
     topSkillIntro: "Aapki sabse mazboot skill hai",
-    learnLink: "Seekhein →",
+    learnLink: "Video Dekhein →",
     shareNote: "Share karne se pehle personal family details check kar lijiye. Skill Setu kisi income ya job ka guarantee nahi deta.",
     resourcesLabel: "General resources",
     resources: [
@@ -1305,7 +1314,7 @@ const T = {
     listenBtn: "Listen",
     stopBtn: "Stop",
     topSkillIntro: "Your strongest skill is",
-    learnLink: "Learn →",
+    learnLink: "Watch Video →",
     shareNote: "Please check personal/family details before sharing. Skill Setu does not guarantee any income or job.",
     resourcesLabel: "General resources",
     resources: [
@@ -1519,6 +1528,8 @@ function renderChat() {
 
 /* ============ AUDIO (browser speechSynthesis) ============ */
 const SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5 h3.5 L12 5.5 v13 L7.5 14.5 H4 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 9 c1.3 1.6 1.3 4.4 0 6 M18.2 6.5 c2.6 3 2.6 8 0 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const PLAY_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M10 8.5 L15.5 12 L10 15.5 Z" fill="currentColor"/></svg>';
+const EXTERNAL_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 4 h6 v6 M20 4 L11 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 14 v5 a1 1 0 0 1-1 1 H5 a1 1 0 0 1-1-1 V7 a1 1 0 0 1 1-1 h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 let speakingBtn = null;
 
 function canSpeak() {
@@ -1848,7 +1859,7 @@ function renderResults(data) {
         <ul>${whyList || '<li>' + escapeHtml(skill.observedBehaviour || '') + '</li>'}</ul>
       </div>
       <span class="transfer-badge">${escapeHtml(t.transferable)}</span>
-      <a class="learn-link" href="${escapeHtml(getLearnUrl(skill.name))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t.learnLink)}</a>
+      <a class="learn-link" href="${escapeHtml(getLearnUrl(skill.name))}" target="_blank" rel="noopener noreferrer">${PLAY_SVG}${escapeHtml(t.learnLink)}</a>
       ${skill.certification ? '<div class="cert-text" style="margin-top:12px;">' + escapeHtml(skill.certification) + '</div>' : ''}
       ${certHtml}
       <div class="evidence-chain">
@@ -1957,7 +1968,8 @@ function renderPassportResources() {
   const t = T[currentLang];
   el.innerHTML = '<span class="pe-label">' + escapeHtml(t.resourcesLabel) + '</span>' +
     t.resources.map(r =>
-      '<div class="pe-item"><a href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(r.name) + '</a> (' + escapeHtml(r.host) + ') — ' + escapeHtml(r.desc) + '</div>'
+      '<div class="pe-item"><a class="resource-link" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(r.name) + ' · ' + escapeHtml(r.host) + EXTERNAL_SVG + '</a>' +
+      '<div class="resource-desc">' + escapeHtml(r.desc) + '</div></div>'
     ).join('');
 }
 
