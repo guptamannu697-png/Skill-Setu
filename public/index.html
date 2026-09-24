@@ -759,6 +759,118 @@
 
   .hidden { display: none !important; }
 
+  /* ---------- Learn & Practice (results invite) ---------- */
+  .practice-invite {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .practice-invite.done { border-left-color: var(--marigold); }
+  .practice-invite .pi-kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--rust); margin-bottom: 8px;
+  }
+  .practice-invite h4 {
+    font-family: 'Fraunces', serif; font-size: 18px; margin: 0 0 6px; color: var(--teal);
+  }
+  .practice-invite p { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 14px; }
+  .practice-invite .pi-done-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 600; color: var(--teal);
+    background: var(--marigold-soft); padding: 6px 12px; border-radius: 20px; margin-bottom: 10px;
+  }
+
+  /* ---------- Practice screen ---------- */
+  .practice { padding: 22px 20px 44px; }
+  .practice-back {
+    background: none; border: none; color: var(--rust);
+    font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; padding: 0; margin-bottom: 16px;
+  }
+  .practice-head .p-kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 6px;
+  }
+  .practice-head h2 {
+    font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; margin: 0 0 4px; line-height: 1.25;
+  }
+  .practice-head .p-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 22px; }
+
+  .practice-step-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+  }
+  .concept-card, .exercise-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px;
+  }
+  .concept-card h3 { font-family: 'Fraunces', serif; font-size: 18px; margin: 0 0 12px; }
+  .concept-card ul { margin: 0; padding-left: 18px; display: grid; gap: 9px; }
+  .concept-card li { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .practice code {
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1px 6px; font-size: 13.5px; color: var(--rust);
+  }
+
+  /* Spreadsheet grid */
+  .sheet { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 14px 0 6px; font-size: 13.5px; }
+  .sheet-row { display: grid; grid-template-columns: 34px 1.1fr 1fr; }
+  .sheet-row + .sheet-row { border-top: 1px solid var(--border); }
+  .sheet-cell { padding: 9px 10px; border-right: 1px solid var(--border); }
+  .sheet-cell:last-child { border-right: none; }
+  .sheet-corner, .sheet-colhead, .sheet-rowhead {
+    background: var(--bg-soft); color: var(--ink-soft); font-weight: 700; text-align: center;
+  }
+  .sheet-data { background: var(--card-bg); color: var(--ink); }
+  .sheet-highlight { background: var(--marigold-soft); }
+
+  .exercise-q { font-size: 15.5px; line-height: 1.5; font-weight: 600; margin: 0 0 12px; color: var(--ink); }
+  .formula-row { display: flex; gap: 10px; margin-top: 6px; }
+  .formula-input {
+    flex: 1; min-width: 0; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: 15px;
+    background: var(--card-bg); color: var(--ink);
+  }
+  .formula-input:focus { outline: 2px solid var(--teal-light); outline-offset: 1px; }
+
+  .feedback { border-radius: 12px; padding: 14px 16px; margin-top: 14px; font-size: 14.5px; line-height: 1.55; }
+  .feedback.correct { background: var(--marigold-soft); border: 1px solid var(--marigold); color: var(--ink); }
+  .feedback.incorrect { background: var(--bg-soft); border: 1px dashed var(--rust); color: var(--ink); }
+  .feedback .fb-title { font-weight: 700; font-family: 'Fraunces', serif; font-size: 16px; margin-bottom: 4px; display: block; }
+
+  .practice-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--border); color: var(--ink-soft);
+    padding: 10px 16px; border-radius: 9px; font-family: 'Work Sans', sans-serif; font-size: 13.5px;
+    font-weight: 600; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .btn-ghost:hover { border-color: var(--teal-light); color: var(--teal); }
+
+  .practice-complete .pc-check {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--teal);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  }
+  .practice-complete h3 { font-family: 'Fraunces', serif; font-size: 22px; margin: 0 0 8px; color: var(--teal); }
+  .practice-complete p { font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 20px; }
+
+  /* Passport practice evidence */
+  .passport-evidence {
+    margin: 0 0 16px; padding: 14px 16px; border-radius: 12px;
+    background: var(--bg-soft); border: 1px solid var(--border);
+  }
+  .passport-evidence .pe-label {
+    display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--teal); background: var(--marigold-soft);
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+  }
+  .passport-evidence .pe-item { font-size: 14px; line-height: 1.55; color: var(--ink); }
+  .passport-evidence .pe-tag { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+
   @media (max-width: 420px) {
     .intro h2 { font-size: 24px; }
   }
@@ -868,6 +980,10 @@
       <h3 id="directionsTitle"></h3>
       <div id="directionsContainer"></div>
     </div>
+    <div class="section-block" id="practiceSection">
+      <h3 id="practiceSectionTitle"></h3>
+      <div class="practice-invite" id="practiceInvite"></div>
+    </div>
     <div class="section-block" id="proofSection">
       <div class="proof-hero" id="proofHero"></div>
     </div>
@@ -879,6 +995,7 @@
       <h3 class="passport-title" id="passportTitle"></h3>
       <p class="passport-sub" id="passportSub"></p>
       <p class="passport-body" id="passportBody"></p>
+      <div id="passportEvidence" class="passport-evidence hidden"></div>
       <div class="passport-actions">
         <button class="copy-btn" id="copyBtn" type="button" onclick="copyPassport()"></button>
         <button class="copy-btn" id="shareBtn" type="button" style="background:var(--rust)" onclick="sharePassport()"></button>
@@ -887,6 +1004,46 @@
     <div class="safety-note" id="safetyNote"></div>
     <div class="restart-row">
       <button class="btn-secondary" id="restartBtn" onclick="restart()"></button>
+    </div>
+  </div>
+
+  <!-- ============ LEARN & PRACTICE SCREEN ============ -->
+  <div id="screen-practice" class="practice hidden">
+    <button class="practice-back" id="practiceBackBtn" onclick="closePractice()"></button>
+    <div class="practice-head">
+      <div class="p-kicker" id="practiceKicker"></div>
+      <h2 id="practiceTitle"></h2>
+      <p class="p-sub" id="practiceSub"></p>
+    </div>
+
+    <div id="practiceConcept">
+      <div class="practice-step-label" id="conceptStepLabel"></div>
+      <div class="concept-card">
+        <h3 id="conceptTitle"></h3>
+        <div id="conceptBody"></div>
+      </div>
+      <button class="btn-primary" id="startExerciseBtn" onclick="startExercise()"></button>
+    </div>
+
+    <div id="practiceExercise" class="hidden">
+      <div class="practice-step-label" id="exerciseStepLabel"></div>
+      <div class="exercise-card">
+        <p class="exercise-q" id="exerciseQuestion"></p>
+        <div id="exerciseTable"></div>
+        <div class="formula-row">
+          <input class="formula-input" id="formulaInput" type="text" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="handlePracticeKey(event)">
+          <button class="btn-primary" id="checkAnswerBtn" onclick="checkAnswer()"></button>
+        </div>
+        <div id="feedbackArea" aria-live="polite"></div>
+        <div class="practice-actions" id="practiceActions"></div>
+      </div>
+    </div>
+
+    <div id="practiceComplete" class="practice-complete hidden">
+      <div class="pc-check"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#FBF6ED" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3 id="completeTitle"></h3>
+      <p id="completeDesc"></p>
+      <button class="btn-primary" id="saveEvidenceBtn" onclick="completePractice()"></button>
     </div>
   </div>
 
@@ -1054,6 +1211,8 @@ const DEMO_ANSWERS = {
 let conversation = [];
 let currentLang = 'hi';
 let lastResult = null;
+let currentModuleId = null;
+let practiceEvidence = null;
 
 // Calls our own backend (/api/chat), which safely holds the API key server-side.
 async function callBackend(mode, prompt) {
@@ -1099,6 +1258,12 @@ function applyTranslations() {
 
   document.getElementById('langBtnHi').classList.toggle('active', currentLang === 'hi');
   document.getElementById('langBtnEn').classList.toggle('active', currentLang === 'en');
+
+  // Refresh Learn & Practice UI on language change
+  if (lastResult) { renderPracticeInvite(); updatePassportEvidence(); }
+  if (currentModuleId && !document.getElementById('screen-practice').classList.contains('hidden')) {
+    renderPracticeScreen();
+  }
 }
 
 function setLang(lang) {
@@ -1412,6 +1577,9 @@ function renderResults(data) {
 
   const passportText = buildPassportText(data);
   document.getElementById('passportBody').textContent = passportText;
+
+  renderPracticeInvite();
+  updatePassportEvidence();
 }
 
 function evidenceRow(num, label, text) {
@@ -1436,6 +1604,9 @@ function buildPassportText(data) {
   lines.push('');
   const p = data.firstProofOfWork || {};
   if (p.title) lines.push(t.proofKicker + ': ' + p.title, p.description || '', '');
+  if (practiceEvidence) {
+    lines.push(t.practice.passportLabel + ': ' + practiceEvidence.detail + ' (' + t.practice.passportTag + ')', '');
+  }
   if (data.passportNextStep) lines.push('Next: ' + data.passportNextStep);
   return lines.join('\n').trim();
 }
@@ -1480,9 +1651,282 @@ async function sharePassport() {
 function restart() {
   conversation = [];
   lastResult = null;
+  practiceEvidence = null;
+  currentModuleId = null;
+  document.getElementById('screen-practice').classList.add('hidden');
   document.getElementById('screen-results').classList.add('hidden');
   document.getElementById('screen-chat').classList.add('hidden');
   document.getElementById('screen-intro').classList.remove('hidden');
+}
+
+/* ============ LEARN & PRACTICE ENGINE ============ */
+T.hi.practice = {
+  sectionTitle: 'Seekhein aur Practice karein',
+  inviteKicker: 'Ek skill gap band karein',
+  inviteDesc: 'Kai directions mein basic Google Sheets aana madad karta hai. Skill Setu ke andar hi, 2 minute ki chhoti aur aasan practice se abhi shuru karein.',
+  inviteBtn: 'Practice shuru karein',
+  doneBadge: 'Practice poori hui ✓',
+  doneDesc: 'Yeh aapke Skill Passport mein "Practice Evidence" ke roop mein add ho gaya hai.',
+  reviewBtn: 'Dobara dekhein',
+  back: '← Results par wapas',
+  kicker: 'Learn & Practice',
+  conceptStep: 'Step 1 · Ek chhota concept',
+  exerciseStep: 'Step 2 · Interactive exercise',
+  startExercise: 'Samajh gayi — exercise karein',
+  check: 'Jawab check karein',
+  tryAgain: 'Dobara try karein',
+  hint: 'Hint',
+  example: 'Example dikhayein',
+  exampleTitle: 'Example',
+  save: 'Practice Evidence save karein',
+  completeTitle: 'Shabaash! Practice poori hui',
+  completeDesc: 'Aapne Google Sheets ka pehla step khud kiya. Ise apne Skill Passport mein "Practice Evidence" ke roop mein save karein.',
+  passportLabel: 'Practice Evidence',
+  passportTag: 'Self-reported + in-app practice'
+};
+T.en.practice = {
+  sectionTitle: 'Learn & Practice',
+  inviteKicker: 'Close a skill gap',
+  inviteDesc: 'Many directions get easier with a little Google Sheets. Try a short, gentle 2-minute practice right here inside Skill Setu.',
+  inviteBtn: 'Start practice',
+  doneBadge: 'Practice complete ✓',
+  doneDesc: 'This has been added to your Skill Passport as "Practice Evidence".',
+  reviewBtn: 'Review again',
+  back: '← Back to results',
+  kicker: 'Learn & Practice',
+  conceptStep: 'Step 1 · A small concept',
+  exerciseStep: 'Step 2 · Interactive exercise',
+  startExercise: 'Got it — start the exercise',
+  check: 'Check answer',
+  tryAgain: 'Try again',
+  hint: 'Hint',
+  example: 'Show example',
+  exampleTitle: 'Example',
+  save: 'Save practice evidence',
+  completeTitle: 'Wonderful! Practice complete',
+  completeDesc: 'You just took your first Google Sheets step on your own. Save it to your Skill Passport as "Practice Evidence".',
+  passportLabel: 'Practice Evidence',
+  passportTag: 'Self-reported + in-app practice'
+};
+
+// Reusable practice modules. Google Sheets is fully interactive for the MVP;
+// future modules (budgeting, bookkeeping, client reporting, social media,
+// event planning, customer communication, basic digital skills) can follow
+// the same shape and plug straight into the engine below.
+const PRACTICE_MODULES = {
+  google_sheets: {
+    id: 'google_sheets',
+    title: { hi: 'Google Sheets: Total nikalna', en: 'Google Sheets: Add up a total' },
+    sub: { hi: 'Ek chhoti digital skill jo kai kaamon mein kaam aati hai', en: 'A small digital skill that unlocks many kinds of work' },
+    conceptTitle: { hi: 'SUM formula kya karta hai?', en: 'What does the SUM formula do?' },
+    concept: {
+      hi: [
+        'Google Sheets ek digital register jaisa hai — har box ko "cell" kehte hain.',
+        'Har cell ka ek pata hota hai: column ka letter + row ka number, jaise <code>B2</code>.',
+        'Bahut saare numbers ek saath jodne ke liye <code>=SUM(pehla:aakhri)</code> likhte hain.',
+        'Jaise <code>=SUM(B2:B5)</code> — yeh B2 se B5 tak ke saare numbers jod deta hai.'
+      ],
+      en: [
+        'Google Sheets is like a digital register — each box is called a "cell".',
+        'Every cell has an address: the column letter + row number, like <code>B2</code>.',
+        'To add many numbers together you write <code>=SUM(first:last)</code>.',
+        'For example <code>=SUM(B2:B5)</code> adds every number from B2 down to B5.'
+      ]
+    },
+    question: {
+      hi: 'Chaaron mahine ka total kharcha nikalne ke liye aap kaunsa formula use karengi?',
+      en: 'What formula would you use to calculate the total expenses for all four months?'
+    },
+    columns: ['A', 'B'],
+    headerRow: { hi: ['Mahina', 'Kharcha'], en: ['Month', 'Expenses'] },
+    rows: [['Jan', '₹18,000'], ['Feb', '₹22,500'], ['Mar', '₹19,800'], ['Apr', '₹26,000']],
+    highlightCol: 2,
+    placeholder: '=SUM(...)',
+    validate: function (input) {
+      const n = (input || '').replace(/\s+/g, '').toUpperCase();
+      return /^=?SUM\(B2:B5\)$/.test(n) || /^=?SUM\(B2,B3,B4,B5\)$/.test(n);
+    },
+    correct: {
+      hi: '✓ Sahi! Aapne apni pehli Google Sheets practice complete kar li.',
+      en: '✓ Correct! You just completed your first Google Sheets practice.'
+    },
+    incorrect: {
+      hi: 'Bilkul sahi nahi. SUM function use karke chaaron mahine ki values jodne ki koshish karein.',
+      en: 'Not quite. Try using the SUM function to add the four monthly values.'
+    },
+    hint: {
+      hi: 'SUM function saare numbers jodta hai. Kharcha column B mein hai, aur values B2 se B5 tak hain.',
+      en: 'The SUM function adds numbers up. Expenses sit in column B, from B2 down to B5.'
+    },
+    example: {
+      hi: '<code>=SUM(B2:B5)</code> — yeh B2 se B5 tak ki saari values ko jod deta hai. "=" se shuru, phir SUM, phir brackets mein range.',
+      en: '<code>=SUM(B2:B5)</code> — this adds every value from B2 to B5. Start with "=", then SUM, then the range in brackets.'
+    },
+    evidence: {
+      hi: 'Google Sheets — SUM formula se ek column ka total nikala',
+      en: 'Google Sheets — used the SUM formula to total a column'
+    }
+  }
+};
+
+function renderPracticeInvite() {
+  const el = document.getElementById('practiceInvite');
+  if (!el) return;
+  const p = T[currentLang].practice;
+  const mod = PRACTICE_MODULES.google_sheets;
+  document.getElementById('practiceSectionTitle').textContent = p.sectionTitle;
+  if (practiceEvidence) {
+    el.className = 'practice-invite done';
+    el.innerHTML =
+      '<div class="pi-done-badge">' + escapeHtml(p.doneBadge) + '</div>' +
+      '<h4>' + escapeHtml(mod.title[currentLang]) + '</h4>' +
+      '<p>' + escapeHtml(p.doneDesc) + '</p>' +
+      '<button class="btn-ghost" onclick="openPractice(\'google_sheets\')" data-testid="practice-review-btn">' + escapeHtml(p.reviewBtn) + '</button>';
+  } else {
+    el.className = 'practice-invite';
+    el.innerHTML =
+      '<div class="pi-kicker">' + escapeHtml(p.inviteKicker) + '</div>' +
+      '<h4>' + escapeHtml(mod.title[currentLang]) + '</h4>' +
+      '<p>' + escapeHtml(p.inviteDesc) + '</p>' +
+      '<button class="btn-primary" onclick="openPractice(\'google_sheets\')" data-testid="start-practice-btn">' + escapeHtml(p.inviteBtn) + '</button>';
+  }
+}
+
+function buildSheet(mod, lang) {
+  let html = '<div class="sheet" role="table">';
+  html += '<div class="sheet-row"><div class="sheet-cell sheet-corner"></div>' +
+    mod.columns.map(c => '<div class="sheet-cell sheet-colhead">' + c + '</div>').join('') + '</div>';
+  html += '<div class="sheet-row"><div class="sheet-cell sheet-rowhead">1</div>' +
+    mod.headerRow[lang].map(h => '<div class="sheet-cell sheet-data">' + escapeHtml(h) + '</div>').join('') + '</div>';
+  mod.rows.forEach((r, i) => {
+    html += '<div class="sheet-row"><div class="sheet-cell sheet-rowhead">' + (i + 2) + '</div>' +
+      r.map((cell, ci) => {
+        const hl = (ci + 1) === mod.highlightCol ? ' sheet-highlight' : '';
+        return '<div class="sheet-cell sheet-data' + hl + '">' + escapeHtml(cell) + '</div>';
+      }).join('') + '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function openPractice(moduleId) {
+  currentModuleId = moduleId;
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-practice').classList.remove('hidden');
+  window.scrollTo(0, 0);
+  renderPracticeScreen();
+}
+
+function closePractice() {
+  document.getElementById('screen-practice').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+}
+
+function renderPracticeScreen() {
+  const mod = PRACTICE_MODULES[currentModuleId];
+  const p = T[currentLang].practice;
+  const lang = currentLang;
+  document.getElementById('practiceBackBtn').textContent = p.back;
+  document.getElementById('practiceKicker').textContent = p.kicker;
+  document.getElementById('practiceTitle').textContent = mod.title[lang];
+  document.getElementById('practiceSub').textContent = mod.sub[lang];
+  document.getElementById('conceptStepLabel').textContent = p.conceptStep;
+  document.getElementById('conceptTitle').textContent = mod.conceptTitle[lang];
+  document.getElementById('conceptBody').innerHTML = '<ul>' + mod.concept[lang].map(c => '<li>' + c + '</li>').join('') + '</ul>';
+  document.getElementById('startExerciseBtn').textContent = p.startExercise;
+  document.getElementById('exerciseStepLabel').textContent = p.exerciseStep;
+  document.getElementById('exerciseQuestion').textContent = mod.question[lang];
+  document.getElementById('exerciseTable').innerHTML = buildSheet(mod, lang);
+  document.getElementById('formulaInput').placeholder = mod.placeholder;
+  document.getElementById('checkAnswerBtn').textContent = p.check;
+  document.getElementById('completeTitle').textContent = p.completeTitle;
+  document.getElementById('completeDesc').textContent = p.completeDesc;
+  document.getElementById('saveEvidenceBtn').textContent = p.save;
+
+  // Reset to step 1
+  document.getElementById('practiceConcept').classList.remove('hidden');
+  document.getElementById('practiceExercise').classList.add('hidden');
+  document.getElementById('practiceComplete').classList.add('hidden');
+  document.getElementById('feedbackArea').innerHTML = '';
+  document.getElementById('practiceActions').innerHTML = '';
+  document.getElementById('formulaInput').value = '';
+}
+
+function startExercise() {
+  document.getElementById('practiceConcept').classList.add('hidden');
+  document.getElementById('practiceExercise').classList.remove('hidden');
+  document.getElementById('formulaInput').focus();
+}
+
+function handlePracticeKey(e) {
+  if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); }
+}
+
+function checkAnswer() {
+  const mod = PRACTICE_MODULES[currentModuleId];
+  const p = T[currentLang].practice;
+  const inp = document.getElementById('formulaInput');
+  const fb = document.getElementById('feedbackArea');
+  const actions = document.getElementById('practiceActions');
+  if (!inp.value.trim()) { inp.focus(); return; }
+  if (mod.validate(inp.value)) {
+    fb.innerHTML = '<div class="feedback correct" data-testid="feedback-correct"><span class="fb-title">' + escapeHtml(mod.correct[currentLang]) + '</span></div>';
+    actions.innerHTML = '';
+    const complete = document.getElementById('practiceComplete');
+    complete.classList.remove('hidden');
+    window.scrollTo({ top: complete.offsetTop - 30, behavior: 'smooth' });
+  } else {
+    fb.innerHTML = '<div class="feedback incorrect" data-testid="feedback-incorrect">' + escapeHtml(mod.incorrect[currentLang]) + '</div>';
+    actions.innerHTML =
+      '<button class="btn-ghost" onclick="tryAgain()" data-testid="try-again-btn">' + escapeHtml(p.tryAgain) + '</button>' +
+      '<button class="btn-ghost" onclick="showHint()" data-testid="hint-btn">' + escapeHtml(p.hint) + '</button>' +
+      '<button class="btn-ghost" onclick="showExample()" data-testid="show-example-btn">' + escapeHtml(p.example) + '</button>';
+  }
+}
+
+function tryAgain() {
+  document.getElementById('feedbackArea').innerHTML = '';
+  document.getElementById('practiceActions').innerHTML = '';
+  const inp = document.getElementById('formulaInput');
+  inp.value = '';
+  inp.focus();
+}
+
+function showHint() {
+  const mod = PRACTICE_MODULES[currentModuleId];
+  const p = T[currentLang].practice;
+  document.getElementById('feedbackArea').innerHTML =
+    '<div class="feedback incorrect" data-testid="feedback-hint"><span class="fb-title">' + escapeHtml(p.hint) + '</span>' + escapeHtml(mod.hint[currentLang]) + '</div>';
+}
+
+function showExample() {
+  const mod = PRACTICE_MODULES[currentModuleId];
+  const p = T[currentLang].practice;
+  document.getElementById('feedbackArea').innerHTML =
+    '<div class="feedback incorrect" data-testid="feedback-example"><span class="fb-title">' + escapeHtml(p.exampleTitle) + '</span>' + mod.example[currentLang] + '</div>';
+}
+
+function completePractice() {
+  const mod = PRACTICE_MODULES[currentModuleId];
+  practiceEvidence = { skill: mod.title[currentLang], detail: mod.evidence[currentLang], moduleId: mod.id };
+  updatePassportEvidence();
+  renderPracticeInvite();
+  document.getElementById('passportBody').textContent = buildPassportText(lastResult || {});
+  closePractice();
+  const pc = document.getElementById('passportCard');
+  window.scrollTo({ top: pc.offsetTop - 30, behavior: 'smooth' });
+}
+
+function updatePassportEvidence() {
+  const el = document.getElementById('passportEvidence');
+  if (!el) return;
+  if (!practiceEvidence) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  const p = T[currentLang].practice;
+  el.classList.remove('hidden');
+  el.innerHTML =
+    '<span class="pe-label">' + escapeHtml(p.passportLabel) + '</span>' +
+    '<div class="pe-item">' + escapeHtml(practiceEvidence.detail) + '</div>' +
+    '<div class="pe-tag">' + escapeHtml(p.passportTag) + '</div>';
 }
 
 /* Init */
