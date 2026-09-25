@@ -822,6 +822,7 @@
   .sheet { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 14px 0 6px; font-size: 13.5px; }
   .sheet-row { display: grid; grid-template-columns: 34px 1.1fr 1fr; }
   .sheet-row + .sheet-row { border-top: 1px solid var(--border); }
+  .qsheet-row + .qsheet-row { border-top: 1px solid var(--border); }
   .sheet-cell { padding: 9px 10px; border-right: 1px solid var(--border); }
   .sheet-cell:last-child { border-right: none; }
   .sheet-corner, .sheet-colhead, .sheet-rowhead {
@@ -2179,19 +2180,19 @@ const PRACTICE_MODULES = {
     id: 'google_sheets',
     title: { hi: 'Google Sheets: Total nikalna', en: 'Google Sheets: Add up a total' },
     sub: { hi: 'Ek chhoti digital skill jo kai kaamon mein kaam aati hai', en: 'A small digital skill that unlocks many kinds of work' },
-    conceptTitle: { hi: 'SUM formula kya karta hai?', en: 'What does the SUM formula do?' },
+    conceptTitle: { hi: 'Google Sheets Formulas kya karte hain?', en: 'What do Google Sheets formulas do?' },
     concept: {
       hi: [
         'Google Sheets ek digital register jaisa hai — har box ko "cell" kehte hain.',
         'Har cell ka ek pata hota hai: column ka letter + row ka number, jaise <code>B2</code>.',
-        'Bahut saare numbers ek saath jodne ke liye <code>=SUM(pehla:aakhri)</code> likhte hain.',
-        'Jaise <code>=SUM(B2:B5)</code> — yeh B2 se B5 tak ke saare numbers jod deta hai.'
+        'Formulas hamesha "=" se shuru hote hain, jaise <code>=SUM(B2:B5)</code> — yeh B2 se B5 tak ke saare numbers jod deta hai.',
+        'Practice mein aap 10 alag formulas try karengi — SUM, AVERAGE, COUNT, MAX, MIN, IF aur aur bhi. Har sawal ke baad explanation bhi milegi.'
       ],
       en: [
         'Google Sheets is like a digital register — each box is called a "cell".',
         'Every cell has an address: the column letter + row number, like <code>B2</code>.',
-        'To add many numbers together you write <code>=SUM(first:last)</code>.',
-        'For example <code>=SUM(B2:B5)</code> adds every number from B2 down to B5.'
+        'Formulas always start with "=", like <code>=SUM(B2:B5)</code> — which adds every number from B2 down to B5.',
+        'In the practice, you\'ll try 10 different formulas — SUM, AVERAGE, COUNT, MAX, MIN, IF and more. Each question comes with its own explanation.'
       ]
     },
     question: {
@@ -2440,14 +2441,12 @@ function renderQuizQuestion() {
 }
 
 function buildSheetFromText(tableText) {
-  // Parses "A1: X | B1: Y\nA2: Z | B2: W" style strings into the existing sheet visual.
-  const lines = (tableText || '').split('\n').filter(Boolean);
+  // Splits on both newlines and "|" so any mix of formatting in the source
+  // data always renders as one clean value per row — never breaks a grid.
+  const cells = (tableText || '').split(/\n|\|/).map(c => c.trim()).filter(Boolean);
   let html = '<div class="sheet" role="table">';
-  lines.forEach(line => {
-    const cells = line.split('|').map(c => c.trim());
-    html += '<div class="sheet-row">' +
-      cells.map(c => '<div class="sheet-cell sheet-data">' + escapeHtml(c) + '</div>').join('') +
-      '</div>';
+  cells.forEach(c => {
+    html += '<div class="qsheet-row"><div class="sheet-cell sheet-data">' + escapeHtml(c) + '</div></div>';
   });
   html += '</div>';
   return html;
